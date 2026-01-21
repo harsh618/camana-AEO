@@ -12,6 +12,7 @@ import TeamSection from '@/components/about-camana/TeamSection';
 import InvestmentSection from '@/components/about-camana/InvestmentSection';
 import ActionSection from '@/components/about-camana/ActionSection';
 import FinalCTASection from '@/components/about-camana/FinalCTASection';
+import IndustryInsightsSection from '@/components/home/IndustryInsightsSection';
 
 import AboutHeader from '@/components/about-camana/AboutHeader';
 import Footer from '@/components/home/Footer';
@@ -30,6 +31,7 @@ export default function AboutUs() {
         <div className="min-h-screen bg-slate-50 pt-20">
             <AboutHeader />
             <HeroSection onGetStarted={scrollToAction} />
+            <IndustryInsightsSection />
             <MacroShiftSection />
 
             <div id="problem">

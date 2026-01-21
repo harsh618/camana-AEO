@@ -75,7 +75,7 @@ export default function DashboardLayout() {
             <aside className="w-64 border-r border-slate-100 flex flex-col pt-6 pb-4">
                 <div className="px-6 mb-8 flex items-center gap-2">
                     <img src="/brand-logo.png" alt="Logo" className="w-6 h-6 object-contain" />
-                    <span className="font-bold text-slate-900">Camana Homes</span>
+                    <span className="font-bold text-slate-900">Searchlyst</span>
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-3 space-y-1">

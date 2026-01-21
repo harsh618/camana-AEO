@@ -11,13 +11,13 @@ export default function ActionSection() {
   const [activeTab, setActiveTab] = useState('brand');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  
+
   const [brandForm, setBrandForm] = useState({
     full_name: '',
     email: '',
     company_website: ''
   });
-  
+
   const [investorForm, setInvestorForm] = useState({
     full_name: '',
     email: '',
@@ -28,7 +28,7 @@ export default function ActionSection() {
     investment_range: '',
     help_beyond_capital: ''
   });
-  
+
   const handleBrandSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -39,7 +39,7 @@ export default function ActionSection() {
     setIsSubmitting(false);
     setSubmitted(true);
   };
-  
+
   const handleInvestorSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -50,7 +50,7 @@ export default function ActionSection() {
     setIsSubmitting(false);
     setSubmitted(true);
   };
-  
+
   if (submitted) {
     return (
       <section id="action" className="py-24 bg-white relative overflow-hidden">
@@ -72,7 +72,7 @@ export default function ActionSection() {
       </section>
     );
   }
-  
+
   return (
     <section id="action" className="py-24 bg-white relative overflow-hidden">
       <div className="max-w-3xl mx-auto px-6">
@@ -87,35 +87,33 @@ export default function ActionSection() {
             Choose Your Path
           </h2>
         </motion.div>
-        
+
         {/* Tab Switcher */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex bg-gray-100 rounded-2xl p-1.5">
             <button
               onClick={() => setActiveTab('brand')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all ${
-                activeTab === 'brand' 
-                  ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md' 
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'brand'
+                  ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
                   : 'text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               <Building2 className="w-4 h-4" />
               I am a Brand / User
             </button>
             <button
               onClick={() => setActiveTab('investor')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all ${
-                activeTab === 'investor' 
-                  ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md' 
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'investor'
+                  ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
                   : 'text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               <Briefcase className="w-4 h-4" />
               I am an Investor
             </button>
           </div>
         </div>
-        
+
         {/* Forms */}
         <motion.div
           key={activeTab}
@@ -129,7 +127,7 @@ export default function ActionSection() {
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Stop Being Invisible.</h3>
                 <p className="text-gray-600">
-                  Secure early access to the Camana Discovery Engine. Optimize your brand for ChatGPT, Perplexity, and Gemini.
+                  Secure early access to the Searchlyst Discovery Engine. Optimize your brand for ChatGPT, Perplexity, and Gemini.
                 </p>
               </div>
               <form onSubmit={handleBrandSubmit} className="space-y-6">
@@ -137,7 +135,7 @@ export default function ActionSection() {
                   <label className="text-sm text-gray-700 mb-2 block font-medium">Full Name</label>
                   <Input
                     value={brandForm.full_name}
-                    onChange={(e) => setBrandForm({...brandForm, full_name: e.target.value})}
+                    onChange={(e) => setBrandForm({ ...brandForm, full_name: e.target.value })}
                     placeholder="John Smith"
                     required
                     className="bg-white border-gray-300 h-12 rounded-xl"
@@ -148,7 +146,7 @@ export default function ActionSection() {
                   <Input
                     type="email"
                     value={brandForm.email}
-                    onChange={(e) => setBrandForm({...brandForm, email: e.target.value})}
+                    onChange={(e) => setBrandForm({ ...brandForm, email: e.target.value })}
                     placeholder="john@company.com"
                     required
                     className="bg-white border-gray-300 h-12 rounded-xl"
@@ -158,13 +156,13 @@ export default function ActionSection() {
                   <label className="text-sm text-gray-700 mb-2 block font-medium">Company Website URL</label>
                   <Input
                     value={brandForm.company_website}
-                    onChange={(e) => setBrandForm({...brandForm, company_website: e.target.value})}
+                    onChange={(e) => setBrandForm({ ...brandForm, company_website: e.target.value })}
                     placeholder="https://yourcompany.com"
                     className="bg-white border-gray-300 h-12 rounded-xl"
                   />
                 </div>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isSubmitting}
                   className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white h-12 rounded-xl text-base font-medium"
                 >
@@ -190,7 +188,7 @@ export default function ActionSection() {
                     <label className="text-sm text-gray-700 mb-2 block font-medium">Full Name</label>
                     <Input
                       value={investorForm.full_name}
-                      onChange={(e) => setInvestorForm({...investorForm, full_name: e.target.value})}
+                      onChange={(e) => setInvestorForm({ ...investorForm, full_name: e.target.value })}
                       placeholder="Jane Doe"
                       required
                       className="bg-white border-gray-300 h-12 rounded-xl"
@@ -201,7 +199,7 @@ export default function ActionSection() {
                     <Input
                       type="email"
                       value={investorForm.email}
-                      onChange={(e) => setInvestorForm({...investorForm, email: e.target.value})}
+                      onChange={(e) => setInvestorForm({ ...investorForm, email: e.target.value })}
                       placeholder="jane@vc.com"
                       required
                       className="bg-white border-gray-300 h-12 rounded-xl"
@@ -212,7 +210,7 @@ export default function ActionSection() {
                   <label className="text-sm text-gray-700 mb-2 block font-medium">LinkedIn Profile URL</label>
                   <Input
                     value={investorForm.linkedin_url}
-                    onChange={(e) => setInvestorForm({...investorForm, linkedin_url: e.target.value})}
+                    onChange={(e) => setInvestorForm({ ...investorForm, linkedin_url: e.target.value })}
                     placeholder="https://linkedin.com/in/yourprofile"
                     className="bg-white border-gray-300 h-12 rounded-xl"
                   />
@@ -222,7 +220,7 @@ export default function ActionSection() {
                     <label className="text-sm text-gray-700 mb-2 block font-medium">Firm / Syndicate Name</label>
                     <Input
                       value={investorForm.firm_name}
-                      onChange={(e) => setInvestorForm({...investorForm, firm_name: e.target.value})}
+                      onChange={(e) => setInvestorForm({ ...investorForm, firm_name: e.target.value })}
                       placeholder="Acme Ventures"
                       className="bg-white border-gray-300 h-12 rounded-xl"
                     />
@@ -231,7 +229,7 @@ export default function ActionSection() {
                     <label className="text-sm text-gray-700 mb-2 block font-medium">Location</label>
                     <Input
                       value={investorForm.location}
-                      onChange={(e) => setInvestorForm({...investorForm, location: e.target.value})}
+                      onChange={(e) => setInvestorForm({ ...investorForm, location: e.target.value })}
                       placeholder="Dubai, UAE"
                       className="bg-white border-gray-300 h-12 rounded-xl"
                     />
@@ -240,9 +238,9 @@ export default function ActionSection() {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm text-gray-700 mb-2 block font-medium">Investor Type</label>
-                    <Select 
-                      value={investorForm.investor_type} 
-                      onValueChange={(v) => setInvestorForm({...investorForm, investor_type: v})}
+                    <Select
+                      value={investorForm.investor_type}
+                      onValueChange={(v) => setInvestorForm({ ...investorForm, investor_type: v })}
                     >
                       <SelectTrigger className="bg-white border-gray-300 h-12 rounded-xl">
                         <SelectValue placeholder="Select type" />
@@ -257,9 +255,9 @@ export default function ActionSection() {
                   </div>
                   <div>
                     <label className="text-sm text-gray-700 mb-2 block font-medium">Investment Interest</label>
-                    <Select 
-                      value={investorForm.investment_range} 
-                      onValueChange={(v) => setInvestorForm({...investorForm, investment_range: v})}
+                    <Select
+                      value={investorForm.investment_range}
+                      onValueChange={(v) => setInvestorForm({ ...investorForm, investment_range: v })}
                     >
                       <SelectTrigger className="bg-white border-gray-300 h-12 rounded-xl">
                         <SelectValue placeholder="Select range" />
@@ -278,14 +276,14 @@ export default function ActionSection() {
                   <label className="text-sm text-gray-700 mb-2 block font-medium">How can you help beyond capital? (Optional)</label>
                   <Textarea
                     value={investorForm.help_beyond_capital}
-                    onChange={(e) => setInvestorForm({...investorForm, help_beyond_capital: e.target.value})}
+                    onChange={(e) => setInvestorForm({ ...investorForm, help_beyond_capital: e.target.value })}
                     placeholder="Network connections, strategic partnerships, industry expertise..."
                     rows={3}
                     className="bg-white border-gray-300 rounded-xl resize-none"
                   />
                 </div>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isSubmitting}
                   className="w-full bg-gradient-to-r from-emerald-600 to-slate-600 hover:from-emerald-500 hover:to-slate-500 text-white h-12 rounded-xl text-base font-medium"
                 >

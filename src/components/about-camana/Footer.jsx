@@ -20,18 +20,18 @@ export default function Footer() {
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-orange-600 flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">Camana Technologies</span>
+              <span className="text-xl font-bold">Searchlyst Technologies</span>
             </div>
             <p className="text-gray-400 text-sm mb-6 max-w-xs">
               Making brands visible in the age of AI search.
             </p>
-            
+
             {/* Newsletter */}
             <div className="mb-6">
               <p className="text-sm text-gray-400 mb-3">Subscribe to our newsletter</p>
               <div className="flex gap-2">
-                <Input 
-                  placeholder="your@email.com" 
+                <Input
+                  placeholder="your@email.com"
                   className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 h-10 rounded-lg flex-1"
                 />
                 <Button size="icon" className="bg-red-600 hover:bg-red-500 h-10 w-10 rounded-lg">
@@ -39,7 +39,7 @@ export default function Footer() {
                 </Button>
               </div>
             </div>
-            
+
             {/* Social */}
             <div className="flex gap-3">
               <a href="#" className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors">
@@ -53,7 +53,7 @@ export default function Footer() {
               </a>
             </div>
           </div>
-          
+
           {/* Links */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
@@ -70,11 +70,11 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        
+
         {/* Bottom bar */}
         <div className="pt-8 border-t border-gray-800">
           <p className="text-center text-gray-500 text-sm">
-            © 2025 Camana Technologies. Making brands visible in the age of AI search.
+            © 2025 Searchlyst Technologies. Making brands visible in the age of AI search.
           </p>
         </div>
       </div>

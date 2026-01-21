@@ -137,7 +137,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="py-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 text-sm">
-            © 2026 Camana Technologies. Making brands visible in the age of AI search. v2.1
+            © 2026 Searchlyst Technologies. Making brands visible in the age of AI search. v2.1
           </p>
           <div className="flex items-center gap-6 text-sm">
             <a href="#" className="text-slate-500 hover:text-red-600 transition-colors">Privacy</a>

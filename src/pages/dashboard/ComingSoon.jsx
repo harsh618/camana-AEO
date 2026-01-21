@@ -15,7 +15,7 @@ export default function ComingSoon() {
             <h1 className="text-3xl font-bold text-slate-900 mb-3">Coming Soon</h1>
             <p className="text-slate-500 max-w-md mb-8">
                 We're working hard to bring you this feature.
-                Stay tuned for updates as we expand the AI Discovery Engine.
+                Stay tuned for updates as we expand Searchlyst.
             </p>
 
             <Button

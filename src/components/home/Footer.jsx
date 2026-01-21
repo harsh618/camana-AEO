@@ -45,7 +45,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
             <div className="flex items-center gap-2 mb-6">
               <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" />
-              <span className="text-xl font-bold text-slate-900">AI Discovery</span>
+              <span className="text-xl font-bold text-slate-900">Searchlyst</span>
             </div>
             <p className="text-slate-500 text-sm leading-relaxed mb-6">
               Making brands visible in the age of AI search. Track, optimize, and dominate AI search results.
@@ -137,7 +137,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="py-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 text-sm">
-            © 2026 Searchlyst Technologies. Making brands visible in the age of AI search. v2.1
+            © 2026 Searchlyst. Making brands visible in the age of AI search. v2.1
           </p>
           <div className="flex items-center gap-6 text-sm">
             <a href="#" className="text-slate-500 hover:text-red-600 transition-colors">Privacy</a>

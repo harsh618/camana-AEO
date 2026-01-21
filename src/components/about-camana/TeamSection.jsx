@@ -7,7 +7,7 @@ const team = [
     name: 'Vijay Singh',
     role: 'Founder & CEO',
     description: 'Founder of Searchlyst with deep domain expertise in Search technology and Real Estate tech.',
-    why: 'Built Searchlyst Technologies to solve the specific "AI Discovery" problem he faced in his own ventures.',
+    why: 'Built Searchlyst to solve the specific "AI Discovery" problem he faced in his own ventures.',
     superpower: 'Product Strategy & Market Penetration',
     icon: Lightbulb,
     color: 'red'

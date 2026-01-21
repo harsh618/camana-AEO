@@ -44,7 +44,7 @@ export default function Header() {
             <a href="#" className="flex items-center gap-2">
               <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" />
               <span className={`text-xl font-bold transition-colors ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
-                AI Discovery
+                Searchlyst
               </span>
             </a>
 
@@ -141,7 +141,7 @@ export default function Header() {
                 <div className="flex items-center justify-between p-4 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" />
-                    <span className="text-xl font-bold text-slate-900">AI Discovery</span>
+                    <span className="text-xl font-bold text-slate-900">Searchlyst</span>
                   </div>
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}

@@ -24,7 +24,6 @@ export default function HeroSection({ onGetStarted }) {
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 tracking-tight mb-6">
             Searchlyst
-            <span className="bg-gradient-to-r from-red-600 via-orange-500 to-slate-500 bg-clip-text text-transparent"> Technologies</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-600 font-light max-w-3xl mx-auto mb-12 leading-relaxed">
@@ -68,69 +67,6 @@ export default function HeroSection({ onGetStarted }) {
               </svg>
               Cancel anytime
             </span>
-          </div>
-        </motion.div>
-
-        {/* Animated Dashboard Mockup */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="mt-20 relative mx-auto max-w-5xl"
-        >
-          <div className="bg-white/40 backdrop-blur-xl border border-white/50 rounded-2xl shadow-2xl overflow-hidden p-2 ring-1 ring-black/5">
-            <div className="bg-slate-900 rounded-xl overflow-hidden shadow-inner border border-slate-800 relative min-h-[400px]">
-              {/* Window Controls */}
-              <div className="bg-slate-800/50 px-4 py-3 flex items-center gap-2 border-b border-slate-700/50">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
-              </div>
-
-              {/* Dashboard Operations */}
-              <div className="p-8 grid grid-cols-12 gap-6">
-                {/* Sidebar */}
-                <div className="col-span-3 space-y-4">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="h-2 bg-slate-800 rounded-full w-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                  ))}
-                </div>
-
-                {/* Main Content */}
-                <div className="col-span-9 space-y-8">
-                  {/* Search Simulation */}
-                  <div className="bg-slate-800/80 rounded-lg p-4 border border-slate-700 flex items-center gap-3">
-                    <div className="w-4 h-4 rounded-full border-2 border-slate-500" />
-                    <div className="h-2 bg-slate-600 rounded-full w-1/3 overflow-hidden relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
-                    </div>
-                  </div>
-
-                  {/* Charts Grid */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50 h-32 flex items-end justify-between px-4 pb-2">
-                      {[40, 70, 50, 90, 60].map((h, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ height: 0 }}
-                          whileInView={{ height: `${h}%` }}
-                          transition={{ duration: 1, delay: i * 0.1 }}
-                          className="w-4 bg-gradient-to-t from-red-600 to-orange-500 rounded-t-sm"
-                        />
-                      ))}
-                    </div>
-                    <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50 h-32 relative overflow-hidden">
-                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-900/20 via-slate-900 to-slate-900" />
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-red-500/20 rounded-full animate-ping" />
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-red-500/50 rounded-full backdrop-blur-md" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent pointer-events-none" />
-            </div>
           </div>
         </motion.div>
       </div>

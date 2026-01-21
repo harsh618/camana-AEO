@@ -26,7 +26,7 @@ export function generateVisibilityReport(userData) {
 
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.text('Powered by Searchlyst AI Discovery Engine', pageWidth / 2, 30, { align: 'center' });
+    doc.text('Powered by Searchlyst', pageWidth / 2, 30, { align: 'center' });
 
     // Company Info Section
     let yPos = 55;
@@ -170,7 +170,7 @@ export function generateVisibilityReport(userData) {
     doc.setFontSize(8);
     doc.setTextColor(148, 163, 184); // Slate 400
     doc.text('This report was generated automatically. Data is updated daily.', pageWidth / 2, pageHeight - 15, { align: 'center' });
-    doc.text('© 2026 Searchlyst AI Discovery Engine', pageWidth / 2, pageHeight - 10, { align: 'center' });
+    doc.text('© 2026 Searchlyst', pageWidth / 2, pageHeight - 10, { align: 'center' });
 
     // Return blob for download
     return doc.output('blob');

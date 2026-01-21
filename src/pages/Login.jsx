@@ -94,7 +94,7 @@ export default function Login() {
                     <div className="text-center lg:text-left mt-12">
                         <Link to="/" className="inline-flex items-center gap-2 mb-8">
                             <img src="/brand-logo.png" alt="AI Discovery" className="w-8 h-8 object-contain" />
-                            <span className="text-xl font-bold text-slate-900">AI Discovery</span>
+                            <span className="text-xl font-bold text-slate-900">Searchlyst</span>
                         </Link>
                         <h1 className="text-3xl font-bold text-slate-900 mb-2">Welcome Back</h1>
                         <p className="text-slate-500">Enter your details to access your dashboard.</p>

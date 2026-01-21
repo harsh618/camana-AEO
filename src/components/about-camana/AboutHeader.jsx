@@ -21,9 +21,9 @@ export default function AboutHeader() {
 
                     {/* Left: Logo */}
                     <Link to="/" className="flex items-center gap-2 z-10">
-                        <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" />
+                        <img src="/brand-logo.png" alt="Searchlyst" className="w-10 h-10 object-contain" />
                         <span className="text-xl font-bold text-slate-900">
-                            AI Discovery
+                            Searchlyst
                         </span>
                     </Link>
 

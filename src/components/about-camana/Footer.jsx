@@ -20,7 +20,7 @@ export default function Footer() {
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-orange-600 flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">Searchlyst Technologies</span>
+              <span className="text-xl font-bold">Searchlyst</span>
             </div>
             <p className="text-gray-400 text-sm mb-6 max-w-xs">
               Making brands visible in the age of AI search.
@@ -74,7 +74,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-gray-800">
           <p className="text-center text-gray-500 text-sm">
-            © 2025 Searchlyst Technologies. Making brands visible in the age of AI search.
+            © 2025 Searchlyst. Making brands visible in the age of AI search.
           </p>
         </div>
       </div>

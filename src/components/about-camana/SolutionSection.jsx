@@ -70,7 +70,7 @@ const colorMap = {
 
 function UseCaseCard({ useCase, isActive }) {
   const colors = colorMap[useCase.color];
-  
+
   return (
     <motion.div
       layout
@@ -88,7 +88,7 @@ function UseCaseCard({ useCase, isActive }) {
           </div>
         </div>
       </div>
-      
+
       {/* Query Section */}
       <div className="p-6 border-b border-gray-100 flex-1">
         <div className="flex items-center gap-2 mb-3">
@@ -99,7 +99,7 @@ function UseCaseCard({ useCase, isActive }) {
         </div>
         <p className="text-gray-800 font-medium italic">"{useCase.query}"</p>
       </div>
-      
+
       {/* Result Section */}
       <div className="p-6 bg-gradient-to-br from-gray-50 to-white">
         <div className="flex items-center gap-2 mb-3">
@@ -127,10 +127,10 @@ function UseCaseCard({ useCase, isActive }) {
 
 export default function SolutionSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  
+
   const nextCase = () => setActiveIndex((prev) => (prev + 1) % useCases.length);
   const prevCase = () => setActiveIndex((prev) => (prev - 1 + useCases.length) % useCases.length);
-  
+
   return (
     <section className="py-24 bg-gray-50 relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
@@ -145,17 +145,17 @@ export default function SolutionSection() {
             <Zap className="w-4 h-4 text-emerald-600" />
             <span className="text-sm text-emerald-600 font-medium">The Solution</span>
           </div>
-          
+
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             The First
-            <span className="bg-gradient-to-r from-red-600 to-slate-500 bg-clip-text text-transparent"> "AI Discovery Engine"</span>
+            <span className="bg-gradient-to-r from-red-600 to-slate-500 bg-clip-text text-transparent"> "Searchlyst"</span>
             <br />Platform.
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             We turn brand invisibility into authoritative citations.
           </p>
         </motion.div>
-        
+
         {/* Desktop: 3 cards side by side */}
         <div className="hidden lg:grid lg:grid-cols-3 gap-6">
           {useCases.map((useCase, index) => (
@@ -170,7 +170,7 @@ export default function SolutionSection() {
             </motion.div>
           ))}
         </div>
-        
+
         {/* Mobile: Carousel */}
         <div className="lg:hidden">
           <div className="relative">
@@ -185,10 +185,10 @@ export default function SolutionSection() {
                 <UseCaseCard useCase={useCases[activeIndex]} isActive={true} />
               </motion.div>
             </AnimatePresence>
-            
+
             {/* Navigation */}
             <div className="flex items-center justify-center gap-4 mt-6">
-              <button 
+              <button
                 onClick={prevCase}
                 className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
               >
@@ -203,7 +203,7 @@ export default function SolutionSection() {
                   />
                 ))}
               </div>
-              <button 
+              <button
                 onClick={nextCase}
                 className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors"
               >

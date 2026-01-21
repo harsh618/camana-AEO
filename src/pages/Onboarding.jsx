@@ -595,7 +595,7 @@ export default function Onboarding() {
                     onClick={handleLogoutAndHome}
                 >
                     <img src="/brand-logo.png" alt="Logo" className="w-7 h-7 object-contain" />
-                    <span className="text-lg font-bold text-slate-900">AI Discovery</span>
+                    <span className="text-lg font-bold text-slate-900">Searchlyst</span>
                 </div>
                 <div className="text-sm font-medium text-slate-500">
                     Step {currentStep + 1} of {steps.length}

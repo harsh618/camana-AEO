@@ -16,7 +16,3 @@ export const PerplexityLogo = ({ className }) => (
 export const ClaudeLogo = ({ className }) => (
   <img src="/logos/claude.jpg" alt="Claude" className={`${className} object-contain rounded-full`} />
 );
-
-export const CopilotLogo = ({ className }) => (
-  <img src="/logos/copilot.jpg" alt="Copilot" className={`${className} object-contain rounded-full`} />
-);

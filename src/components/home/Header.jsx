@@ -9,7 +9,7 @@ const navLinks = [
   { label: 'Features', href: '#features' },
   { label: 'How It Works', href: '#how-it-works' },
   { label: 'Pricing', href: '#pricing' },
-  { label: 'Testimonials', href: '#testimonials' },
+  { label: 'FAQ', href: '#faq' },
 ];
 
 export default function Header() {
@@ -93,7 +93,7 @@ export default function Header() {
                     <Button
                       className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-red-500/20"
                     >
-                      Start Free 7 Day Trial
+                      Start 7 Days Free Trial
                     </Button>
                   </Link>
                 </>
@@ -195,7 +195,7 @@ export default function Header() {
                         <Button
                           className="w-full bg-primary hover:bg-primary/90 text-white"
                         >
-                          Start Free 7 Day Trial
+                          Start 7 Days Free Trial
                         </Button>
                       </Link>
                     </>

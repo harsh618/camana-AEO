@@ -66,7 +66,7 @@ export default function TractionSection() {
             <TrendingUp className="w-4 h-4 text-red-600" />
             <span className="text-sm text-red-600 font-medium">Traction & Performance</span>
           </div>
-          
+
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             The "Hockey Stick"
             <span className="bg-gradient-to-r from-red-600 to-slate-500 bg-clip-text text-transparent"> is Real.</span>
@@ -75,7 +75,7 @@ export default function TractionSection() {
             We consistently deliver exponential visibility growth within one quarter.
           </p>
         </motion.div>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -100,46 +100,46 @@ export default function TractionSection() {
               </div>
             </div>
           </div>
-          
+
           {/* Chart */}
           <div className="relative h-[350px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="platformGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                <XAxis 
-                  dataKey="week" 
-                  axisLine={false} 
-                  tickLine={false} 
+                <XAxis
+                  dataKey="week"
+                  axisLine={false}
+                  tickLine={false}
                   tick={{ fill: '#6b7280', fontSize: 12 }}
                 />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
                   tick={{ fill: '#6b7280', fontSize: 12 }}
                   tickFormatter={(value) => `${value}%`}
                   domain={[0, 200]}
                   ticks={[0, 50, 100, 150, 200]}
                 />
                 <Tooltip content={<CustomTooltip />} />
-                <Area 
-                  type="monotone" 
-                  dataKey="baseline" 
-                  stroke="#d1d5db" 
-                  strokeWidth={2} 
+                <Area
+                  type="monotone"
+                  dataKey="baseline"
+                  stroke="#d1d5db"
+                  strokeWidth={2}
                   strokeDasharray="5 5"
-                  fill="none" 
+                  fill="none"
                 />
-                <Area 
-                  type="monotone" 
-                  dataKey="withPlatform" 
-                  stroke="#8b5cf6" 
-                  strokeWidth={3} 
+                <Area
+                  type="monotone"
+                  dataKey="withPlatform"
+                  stroke="#8b5cf6"
+                  strokeWidth={3}
                   fill="url(#platformGradient)"
                   dot={(props) => {
                     const { cx, cy, payload } = props;
@@ -153,34 +153,13 @@ export default function TractionSection() {
                 />
               </AreaChart>
             </ResponsiveContainer>
-            
+
             {/* Callout badge */}
             <div className="absolute top-4 right-4 md:right-20">
               <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white px-4 py-2 rounded-lg shadow-lg">
                 <span className="text-sm font-semibold">Average 180% visibility increase in 90 days</span>
               </div>
             </div>
-          </div>
-          
-          {/* Milestone cards */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-8 pt-8 border-t border-gray-100">
-            {milestones.map((milestone, index) => (
-              <motion.div
-                key={milestone.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                className="text-center"
-              >
-                <div className={`w-12 h-12 rounded-xl ${milestone.color} flex items-center justify-center mx-auto mb-3`}>
-                  <milestone.icon className="w-6 h-6" />
-                </div>
-                <p className="text-xs text-gray-500 mb-1">Week {milestone.week}</p>
-                <p className="font-semibold text-gray-900 mb-1">{milestone.label}</p>
-                <p className="text-2xl font-bold text-red-600">{milestone.visibility}</p>
-              </motion.div>
-            ))}
           </div>
         </motion.div>
       </div>

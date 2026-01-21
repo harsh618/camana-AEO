@@ -43,7 +43,7 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
-    <section ref={ref} className="py-24 bg-white relative overflow-hidden">
+    <section id="faq" ref={ref} className="py-24 bg-white relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(253,45,21,0.03),transparent_50%)]" />
 
@@ -81,8 +81,8 @@ export default function FAQSection() {
             >
               <div
                 className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden ${openIndex === index
-                    ? 'border-red-200 shadow-lg shadow-red-500/10'
-                    : 'border-slate-100 hover:border-slate-200'
+                  ? 'border-red-200 shadow-lg shadow-red-500/10'
+                  : 'border-slate-100 hover:border-slate-200'
                   }`}
               >
                 <button

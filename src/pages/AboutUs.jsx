@@ -9,6 +9,7 @@ import MarketSection from '@/components/about-camana/MarketSection';
 import BusinessModelSection from '@/components/about-camana/BusinessModelSection';
 import FAQSection from '@/components/about-camana/FAQSection';
 import TeamSection from '@/components/about-camana/TeamSection';
+import InvestmentSection from '@/components/about-camana/InvestmentSection';
 import ActionSection from '@/components/about-camana/ActionSection';
 import FinalCTASection from '@/components/about-camana/FinalCTASection';
 
@@ -48,6 +49,9 @@ export default function AboutUs() {
             </div>
             <div id="team">
                 <TeamSection />
+            </div>
+            <div id="investment">
+                <InvestmentSection />
             </div>
             {/* Removed InvestmentSection as per request to clone 'About Us' specifically, usually excluding investment details unless requested, and user mentioned 'remove login button' etc. */}
             {/* Will check ActionSection/FinalCTASection content for login buttons next */}

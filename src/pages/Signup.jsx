@@ -81,7 +81,7 @@ export default function Signup() {
             } else {
                 // Existing user
                 if (userDoc.data().onboardingCompleted) {
-                    navigate('/dashboard');
+                    navigate('/onboarding');
                 } else {
                     navigate('/onboarding');
                 }

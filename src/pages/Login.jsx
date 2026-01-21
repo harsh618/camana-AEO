@@ -12,6 +12,7 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showWaitlistMessage, setShowWaitlistMessage] = useState(false);
     const navigate = useNavigate();
     const { toast } = useToast();
 
@@ -19,8 +20,16 @@ export default function Login() {
         e.preventDefault();
         setLoading(true);
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            navigate('/dashboard');
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            const user = result.user;
+
+            // Fetch user data to check onboarding status
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists() && userDoc.data().onboardingCompleted) {
+                navigate('/onboarding');
+            } else {
+                navigate('/onboarding');
+            }
         } catch (error) {
             toast({
                 title: "Login Failed",
@@ -55,7 +64,7 @@ export default function Login() {
             } else {
                 // Existing user
                 if (userDoc.data().onboardingCompleted) {
-                    navigate('/dashboard');
+                    navigate('/onboarding');
                 } else {
                     navigate('/onboarding');
                 }

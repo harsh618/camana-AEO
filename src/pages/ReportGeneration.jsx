@@ -1,221 +1,283 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { Sparkles, Loader2, PlayCircle, Scale, Globe, ArrowRight } from 'lucide-react';
-import { db } from '@/lib/firebase';
-import { localDB } from "@/lib/local-db";
-import { doc, getDoc, setDoc, collection, addDoc } from 'firebase/firestore';
 import { useAuth } from '@/lib/AuthContext';
-import { generateVisibilityReport, downloadPDF } from '@/lib/pdf-generator';
+import { db } from '@/lib/firebase';
+import { doc, getDoc, updateDoc, collection, addDoc } from 'firebase/firestore';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Loader2, CheckCircle2, AlertTriangle, FileText, Download, Share2, BarChart3, Globe, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useToast } from "@/components/ui/use-toast";
+import { runGeoAudit } from '@/lib/geoAuditor';
 
-const LOGOS = [
-    { name: 'ChatGPT', color: 'bg-green-100 text-green-600', icon: '🤖' },
-    { name: 'Claude', color: 'bg-amber-100 text-amber-600', icon: '🧠' },
-    { name: 'Google', color: 'bg-blue-100 text-blue-600', icon: 'G' },
-    { name: 'Perplexity', color: 'bg-cyan-100 text-cyan-600', icon: '🔍' },
-    { name: 'Bing', color: 'bg-indigo-100 text-indigo-600', icon: 'B' },
-    { name: 'Gemini', color: 'bg-rose-100 text-rose-600', icon: '✨' },
-];
-
-export default function ReportGeneration() {
-    const navigate = useNavigate();
+const ReportGeneration = () => {
     const { user } = useAuth();
-    const [progress, setProgress] = useState(0);
-    const [status, setStatus] = useState('Initializing agent...');
-    const [completedLogos, setCompletedLogos] = useState([]);
-    const [isReady, setIsReady] = useState(false);
-    const [userData, setUserData] = useState(null);
+    const navigate = useNavigate();
+    const { toast } = useToast();
 
-    // Fetch user data on mount
+    // State
+    const [status, setStatus] = useState('initializing'); // initializing, scraping, analyzing, saving, complete, error
+    const [progress, setProgress] = useState(0);
+    const [reportData, setReportData] = useState(null);
+    const [workspaceData, setWorkspaceData] = useState(null);
+
+    // Fetch workspace and start audit
     useEffect(() => {
-        const fetchUserData = async () => {
-            if (!user) return;
+        const initAudit = async () => {
+            if (!user?.uid) return;
 
             try {
-                const userDoc = await getDoc(doc(db, 'users', user.uid));
-                if (userDoc.exists()) {
-                    const workspaceId = userDoc.data().workspaceId;
-                    if (workspaceId) {
-                        const workspaceDoc = await getDoc(doc(db, 'workspaces', workspaceId));
-                        if (workspaceDoc.exists()) {
-                            setUserData(workspaceDoc.data());
-                        }
-                    }
+                // 1. Get Workspace Data
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (!userDoc.exists()) {
+                    throw new Error("User profile not found");
                 }
+                const workspaceId = userDoc.data().workspaceId;
+                if (!workspaceId) {
+                    throw new Error("No workspace linked");
+                }
+                const workspaceSnap = await getDoc(doc(db, "workspaces", workspaceId));
+                if (!workspaceSnap.exists()) {
+                    throw new Error("Workspace not found");
+                }
+
+                const wsData = workspaceSnap.data();
+                setWorkspaceData(wsData);
+
+                // Start Audit Flow
+                runAuditFlow(wsData.websiteUrl || wsData.domain, workspaceId);
+
             } catch (error) {
-                console.error('Error fetching user data:', error);
+                console.error("Init Error:", error);
+                setStatus('error');
+                toast({ title: "Initialization Failed", description: error.message, variant: "destructive" });
             }
         };
 
-        fetchUserData();
+        if (user) {
+            initAudit();
+        }
     }, [user]);
 
+    const runAuditFlow = async (url, workspaceId) => {
+        if (!url) {
+            setStatus('error');
+            return;
+        }
 
-    useEffect(() => {
-        // 1. Initial Start
-        const timer = setTimeout(() => {
-            setStatus('Connecting to AI knowledge base...');
-            setProgress(10);
-        }, 1000);
+        try {
+            // Step 1: Scraping
+            setStatus('scraping');
+            setProgress(20);
 
-        // 2. Loop through logos simulation
-        let currentLogoIndex = 0;
-        const logoInterval = setInterval(() => {
-            if (currentLogoIndex < LOGOS.length) {
-                const logo = LOGOS[currentLogoIndex];
-                setStatus(`Scanning ${logo.name} visibility...`);
-                setCompletedLogos(prev => [...prev, logo.name]);
-                setProgress(prev => prev + 15);
-                currentLogoIndex++;
-            } else {
-                clearInterval(logoInterval);
-                setStatus('Finalizing your visibility score...');
-                setProgress(100);
+            const auditResult = await runGeoAudit(url);
 
-                // Generate PDF after animation completes
-                setTimeout(async () => {
-                    if (userData) {
-                        try {
-                            setStatus('Generating your PDF report...');
-
-                            // Generate PDF
-                            const pdfBlob = generateVisibilityReport(userData);
-                            const filename = `${userData.brandName?.replace(/\s+/g, '-') || 'brand'}-visibility-report-${new Date().toISOString().split('T')[0]}.pdf`;
-
-                            // Download PDF - Skipped as per request, download only on dashboard
-                            // downloadPDF(pdfBlob, filename);
-
-                            // Save report metadata to Firebase
-                            if (user) {
-                                const reportData = {
-                                    userId: user.uid,
-                                    brandName: userData.brandName,
-                                    filename: filename,
-                                    type: 'visibility',
-                                    size: pdfBlob.size
-                                };
-
-                                // Save to Local DB (Priority)
-                                localDB.saveReport(reportData);
-
-                                // Save to Firestore (Backup)
-                                await addDoc(collection(db, 'reports'), {
-                                    ...reportData,
-                                    generatedAt: new Date()
-                                });
-                            }
-
-                            setStatus('Report generated successfully!');
-                        } catch (error) {
-                            console.error('Error generating PDF:', error);
-                            setStatus('Report generation complete!');
-                        }
-                    }
-
-                    setIsReady(true);
-                }, 1000);
+            if (!auditResult.success) {
+                throw new Error(auditResult.error);
             }
-        }, 1500);
 
-        return () => {
-            clearTimeout(timer);
-            clearInterval(logoInterval);
-        };
-    }, [userData, user]);
+            setProgress(60);
+            setStatus('analyzing');
 
-    return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-            <div className="bg-white w-full max-w-5xl rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+            // Simulate analysis delay if needed for UX
+            await new Promise(r => setTimeout(r, 1500));
 
-                {/* Left Side: Context & Action */}
-                <div className="w-full md:w-1/2 p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-slate-100">
-                    <div className="mb-8">
-                        <img src="/brand-logo.png" alt="Logo" className="w-10 h-10 mb-6" />
-                        <div className="flex items-center gap-3 mb-2">
-                            <div className="p-2 bg-red-100 rounded-lg">
-                                <span className="text-red-600 font-bold">X</span>
-                            </div>
-                            <div>
-                                <h3 className="font-semibold text-slate-900">Camana Homes</h3>
-                                <p className="text-sm text-slate-500">camanahomes.com</p>
-                            </div>
-                        </div>
+            setProgress(90);
+            setStatus('saving');
+
+            // Step 3: Save to Firestore
+            const reportPayload = {
+                workspaceId,
+                userId: user.uid,
+                url,
+                ...auditResult.analysis,
+                createdAt: new Date(),
+                type: 'geo_audit_v1'
+            };
+
+            const reportRef = await addDoc(collection(db, "reports"), reportPayload);
+
+            await updateDoc(doc(db, "workspaces", workspaceId), {
+                lastReportId: reportRef.id,
+                lastAuditDate: new Date()
+            });
+
+            setReportData(reportPayload);
+            setProgress(100);
+            setStatus('complete');
+
+        } catch (error) {
+            console.error("Audit Error:", error);
+            setStatus('error');
+            toast({ title: "Audit Failed", description: error.message, variant: "destructive" });
+        }
+    };
+
+    // --- SUCCESS MODAL & REDIRECT ---
+    useEffect(() => {
+        if (status === 'complete') {
+            const timer = setTimeout(() => {
+                navigate('/');
+            }, 5000); // Redirect after 5 seconds
+            return () => clearTimeout(timer);
+        }
+    }, [status, navigate]);
+
+    if (status === 'complete') {
+        return (
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 relative overflow-hidden font-sans">
+                {/* Google-style Animated Background */}
+                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                    <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-200/30 rounded-full blur-[100px] animate-pulse" />
+                    <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-red-200/30 rounded-full blur-[100px] animate-pulse delay-1000" />
+                </div>
+
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="bg-white rounded-3xl shadow-2xl p-10 max-w-md w-full text-center border border-slate-100 relative z-10"
+                >
+                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <CheckCircle2 className="w-10 h-10 text-green-600" />
                     </div>
 
-                    <h1 className="text-4xl font-bold text-slate-900 mb-6 leading-tight">
-                        Generating your first report
-                    </h1>
+                    <h2 className="text-3xl font-extrabold text-slate-900 mb-4">Report Generated!</h2>
 
-                    <p className="text-lg text-slate-600 mb-10 leading-relaxed">
-                        We're creating your prompts and running your first visibility report now. We'll do this automatically every night so you always have fresh data on how your brand appears across ChatGPT, Perplexity, Claude, and more.
+                    <p className="text-slate-600 text-lg mb-8 leading-relaxed">
+                        Your deep audit for <span className="font-bold text-slate-900">{workspaceData?.brandName}</span> is ready.
+                        <br /><br />
+                        We've sent the complete PDF report to <span className="font-bold text-slate-900">{user?.email}</span>.
                     </p>
 
-                    <div className="flex items-center gap-4">
-                        <Button
-                            onClick={() => navigate('/dashboard/reports')}
-                            disabled={!isReady}
-                            className={`w-full h-12 text-lg transition-all transform duration-300 ${isReady ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0 pointer-events-none'}
-                                bg-slate-900 hover:bg-slate-800 text-white shadow-lg hover:shadow-xl rounded-xl`}
-                        >
-                            View Report in Dashboard
-                            <ArrowRight className="w-5 h-5 ml-2" />
-                        </Button>
-                        <span className="text-sm text-slate-500 font-medium animate-pulse">
-                            {isReady ? '← Ready to view!' : ''}
-                        </span>
-                    </div>
-
-                    <div className="mt-auto pt-10 text-xs text-slate-400">
-                        © 2026 AI Discovery Engine
-                    </div>
-                </div>
-
-                {/* Right Side: Animation & Status */}
-                <div className="w-full md:w-1/2 bg-slate-50/50 p-12 flex flex-col items-center justify-center relative">
-
-                    {/* Central Animation */}
-                    <div className="relative mb-12">
-                        <div className="flex gap-4 items-center justify-center flex-wrap max-w-xs mx-auto">
-                            {LOGOS.map((logo) => {
-                                const isActive = completedLogos.includes(logo.name);
-                                return (
-                                    <div
-                                        key={logo.name}
-                                        className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-sm transition-all duration-500 ${isActive
-                                            ? `${logo.color} scale-100 opacity-100`
-                                            : 'bg-white text-slate-300 scale-90 opacity-50 grayscale'
-                                            }`}
-                                    >
-                                        {isActive ? (
-                                            <div className="relative">
-                                                {logo.icon}
-                                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
-                                            </div>
-                                        ) : logo.icon}
-                                    </div>
-                                )
-                            })}
+                    <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-8">
+                        <p className="text-sm text-slate-500 mb-2">Redirecting to home in...</p>
+                        <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                            <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: "100%" }}
+                                transition={{ duration: 5, ease: "linear" }}
+                                className="h-full bg-red-600"
+                            />
                         </div>
-
-                        {/* Scanning Line Animation */}
-                        {!isReady && (
-                            <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500/20 to-transparent -translate-y-1/2 animate-pulse" />
-                        )}
                     </div>
 
-                    <h3 className="text-xl font-medium text-slate-900 mb-2">
-                        {status}
-                    </h3>
+                    <Button
+                        onClick={() => navigate('/')}
+                        className="w-full h-12 text-base bg-slate-900 hover:bg-black text-white rounded-xl shadow-lg"
+                    >
+                        Back to Home Now
+                    </Button>
+                </motion.div>
+            </div>
+        );
+    }
 
-                    <div className="w-64 h-2 bg-slate-200 rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-red-600 transition-all duration-300 ease-linear"
-                            style={{ width: `${progress}%` }}
+    if (status === 'error') {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <div className="text-center p-8 bg-white rounded-2xl shadow-xl max-w-md">
+                    <AlertTriangle className="w-16 h-16 text-red-600 mx-auto mb-4" />
+                    <h2 className="text-2xl font-bold text-slate-900 mb-2">Audit Failed</h2>
+                    <p className="text-slate-600 mb-6">We encountered an issue while auditing your website. Please check the URL and try again.</p>
+                    <Button onClick={() => window.location.reload()} className="bg-red-600 hover:bg-black text-white">Retry Audit</Button>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-white relative overflow-hidden">
+            {/* Google-style Animated Background */}
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-200/30 rounded-full blur-[100px] animate-pulse" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-red-200/30 rounded-full blur-[100px] animate-pulse delay-1000" />
+            </div>
+
+            <div className="z-10 text-center space-y-8 max-w-lg w-full px-6">
+                <div className="relative w-24 h-24 mx-auto">
+                    <svg className="w-full h-full" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#f1f5f9" strokeWidth="8" />
+                        <motion.circle
+                            cx="50" cy="50" r="45"
+                            fill="none" stroke="#dc2626" strokeWidth="8"
+                            strokeLinecap="round"
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: progress / 100 }}
+                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                            style={{ rotate: -90, transformOrigin: "50% 50%" }}
                         />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-xl font-bold text-slate-900">{progress}%</span>
                     </div>
                 </div>
 
+                <div className="space-y-4">
+                    <h2 className="text-2xl font-bold text-slate-900 animate-pulse">
+                        {status === 'initializing' && "Initializing Engines..."}
+                        {status === 'scraping' && "Scanning Digital Footprint..."}
+                        {status === 'analyzing' && "Analyzing GEO Visibility..."}
+                        {status === 'saving' && "Finalizing Report..."}
+                    </h2>
+                    <p className="text-slate-500">Connecting to AI Knowledge Graphs...</p>
+                </div>
+
+                {/* Engine Status Cards */}
+                <div className="grid grid-cols-1 gap-3 w-full animate-in slide-in-from-bottom duration-700">
+                    <EngineStatusCard
+                        name="Perplexity"
+                        status={status === 'analyzing' || status === 'saving' ? 'complete' : progress > 30 ? 'scanning' : 'waiting'}
+                        icon="/logos/perplexity.jpg"
+                    />
+                    <EngineStatusCard
+                        name="Gemini 1.5 Pro"
+                        status={status === 'analyzing' || status === 'saving' ? 'complete' : progress > 50 ? 'scanning' : 'waiting'}
+                        icon="/logos/gemini.jpg"
+                    />
+                    <EngineStatusCard
+                        name="ChatGPT-4o"
+                        status={status === 'analyzing' || status === 'saving' ? 'complete' : progress > 70 ? 'scanning' : 'waiting'}
+                        icon="/logos/chatgpt.jpg"
+                    />
+                    <EngineStatusCard
+                        name="Claude 3.5 Sonnet"
+                        status={status === 'analyzing' || status === 'saving' ? 'complete' : progress > 85 ? 'scanning' : 'waiting'}
+                        icon="/logos/claude.jpg"
+                    />
+                </div>
             </div>
         </div>
     );
-}
+};
+
+const EngineStatusCard = ({ name, status, icon }) => {
+    return (
+        <div className={`p-3 rounded-xl border flex items-center gap-3 transition-all ${status === 'scanning' ? 'border-red-500 bg-red-50 shadow-md ring-1 ring-red-200' :
+                status === 'complete' ? 'border-green-200 bg-green-50' :
+                    'border-slate-100 bg-white opacity-60'
+            }`}>
+            <div className="relative shrink-0">
+                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm overflow-hidden border border-slate-100">
+                    <img src={icon} alt={name} className="w-full h-full object-cover" />
+                </div>
+                {status === 'complete' && (
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                        <CheckCircle2 className="w-3 h-3 text-white" />
+                    </div>
+                )}
+            </div>
+            <div className="text-left flex-1">
+                <div className="flex justify-between items-center">
+                    <p className="text-sm font-bold text-slate-900">{name}</p>
+                    {status === 'scanning' && <Loader2 className="w-3 h-3 text-red-500 animate-spin" />}
+                </div>
+                <p className="text-xs text-slate-500">
+                    {status === 'waiting' && 'Pending...'}
+                    {status === 'scanning' && 'Analyzing visibility...'}
+                    {status === 'complete' && 'Audit Complete'}
+                </p>
+            </div>
+        </div>
+    );
+};
+
+export default ReportGeneration;

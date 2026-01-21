@@ -178,7 +178,7 @@ export default function PricingSection() {
 
                 {/* CTA */}
                 <Button
-                  onClick={() => navigate('/signup')}
+                  onClick={() => navigate('/waitlist')}
                   className={`w-full py-6 text-lg rounded-xl transition-all duration-300 ${plan.popular
                     ? 'bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-orange-500 text-white shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30'
                     : 'bg-slate-900 hover:bg-slate-800 text-white'

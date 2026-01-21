@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '@/components/home/Header';
 import HeroSection from '@/components/home/HeroSection';
 import GrowthGraphSection from '@/components/home/GrowthGraphSection';
+import IndustryInsightsSection from '@/components/home/IndustryInsightsSection';
 import FeaturesSection from '@/components/home/FeaturesSection';
 import HowItWorksSection from '@/components/home/HowItWorksSection';
 import PricingSection from '@/components/home/PricingSection';
@@ -15,6 +16,7 @@ export default function Home() {
       <Header />
       <HeroSection />
       <GrowthGraphSection />
+      <IndustryInsightsSection />
       <FeaturesSection />
       <HowItWorksSection />
       <PricingSection />

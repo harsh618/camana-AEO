@@ -14,6 +14,12 @@ service cloud.firestore {
       allow read, write: if request.auth != null && resource.data.ownerId == request.auth.uid;
     }
 
+    // Waitlist: Allow anyone to join
+    match /waitlist/{entryId} {
+      allow create: if true;
+      allow read, write: if false; // Only allow creation via form
+    }
+
     // Default: Deny everything else
     match /{document=**} {
       allow read, write: if false;

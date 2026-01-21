@@ -53,14 +53,10 @@ const AuthenticatedApp = () => {
       <Routes>
         {/* Public Routes with Redirect if Logged In */}
         <Route path="/login" element={
-          user ? (
-            user.onboardingCompleted ? <Navigate to="/dashboard" /> : <Navigate to="/onboarding" />
-          ) : <Login />
+          user ? <Navigate to="/onboarding" /> : <Login />
         } />
         <Route path="/signup" element={
-          user ? (
-            user.onboardingCompleted ? <Navigate to="/dashboard" /> : <Navigate to="/onboarding" />
-          ) : <Signup />
+          user ? <Navigate to="/onboarding" /> : <Signup />
         } />
         <Route path="/about-us" element={
           <LayoutWrapper currentPageName="about-us">
@@ -74,31 +70,14 @@ const AuthenticatedApp = () => {
 
 
 
-        {/* Dashboard Routes (Protected & Require Onboarding) */}
-        <Route path="/dashboard" element={
-          user ? (
-            user.onboardingCompleted ? <DashboardLayout /> : <Navigate to="/onboarding" replace />
-          ) : <Navigate to="/login" replace />
-        }>
-          <Route index element={<Navigate to="/dashboard/reports" replace />} />
-          <Route path="reports" element={<Reports />} />
-          <Route path="agent" element={<Navigate to="/dashboard/coming-soon" replace />} />
-          <Route path="coming-soon" element={<ComingSoon />} />
-          <Route path="*" element={<Navigate to="/dashboard/coming-soon" replace />} />
-        </Route>
+        {/* Dashboard Routes (Redirected to Home for now) */}
+        <Route path="/dashboard/*" element={<Navigate to="/" replace />} />
 
         {/* Home Route - accessible to everyone */}
         <Route path="/" element={
-          user ? <Navigate to="/dashboard" replace /> : (
-            (() => {
-              console.log("Rendering Home Route. User:", user?.email, "Onboarding:", user?.onboardingCompleted);
-              return (
-                <LayoutWrapper currentPageName={mainPageKey}>
-                  <MainPage />
-                </LayoutWrapper>
-              );
-            })()
-          )
+          <LayoutWrapper currentPageName={mainPageKey}>
+            <MainPage />
+          </LayoutWrapper>
         } />
 
         {/* Other Generated Pages */}

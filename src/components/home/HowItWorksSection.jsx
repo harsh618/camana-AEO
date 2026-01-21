@@ -51,7 +51,7 @@ const milestones = [
   },
   {
     week: 10,
-    visibility: 188,
+    visibility: 180,
     stage: 'AI Domination',
     color: '#22C55E', // Green-500
     details: [
@@ -79,10 +79,10 @@ const graphData = Array.from({ length: 12 }, (_, i) => {
     withOptimization = 63 + (93 - 63) * t;
   } else if (week <= 10) {
     const t = (week - 7) / 3;
-    withOptimization = 93 + (188 - 93) * t;
+    withOptimization = 93 + (180 - 93) * t;
   } else {
     // Week 11+
-    withOptimization = 188 + (week - 10) * 15;
+    withOptimization = 180 + (week - 10) * 15;
   }
 
   const milestone = milestones.find(m => m.week === week);
@@ -299,40 +299,6 @@ export default function HowItWorksSection() {
             </ResponsiveContainer>
           </div>
         </motion.div>
-
-        {/* Milestone Cards (Week KPI Cards) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-16">
-          {milestones.map((milestone, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-              className="bg-white rounded-xl p-4 shadow-md border border-slate-100 hover:shadow-lg transition-all"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  Week {milestone.week}
-                </span>
-                <span className={`text-xs font-bold px-2 py-1 rounded-full text-white`} style={{ backgroundColor: milestone.color }}>
-                  {milestone.visibility}% Vis
-                </span>
-              </div>
-              <h4 className="font-bold text-slate-900 mb-3 text-sm h-10 flex items-center">
-                {milestone.stage}
-              </h4>
-              <ul className="space-y-2">
-                {milestone.details.map((detail, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="leading-tight">{detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
 
         {/* KPI Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-16">

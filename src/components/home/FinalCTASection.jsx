@@ -1,10 +1,12 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, Sparkles, Zap, Clock } from 'lucide-react';
 
 export default function FinalCTASection() {
   const ref = useRef(null);
+  const navigate = useNavigate();
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
@@ -31,7 +33,7 @@ export default function FinalCTASection() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 border border-white/30 backdrop-blur-sm mb-8"
           >
             <Sparkles className="w-4 h-4 text-amber-300" />
-            <span className="text-white text-sm">Limited Time: 7 Day Free Trial</span>
+            <span className="text-white text-sm">Join the Early Access Waitlist</span>
           </motion.div>
 
           {/* Headline */}
@@ -57,6 +59,7 @@ export default function FinalCTASection() {
           >
             <Button
               size="lg"
+              onClick={() => navigate('/signup')}
               className="bg-white hover:bg-slate-50 text-red-600 px-12 py-8 text-xl rounded-2xl shadow-2xl shadow-black/20 transition-all duration-300 hover:shadow-black/30 hover:-translate-y-1 group font-semibold"
             >
               Get Your Free AI Visibility Report

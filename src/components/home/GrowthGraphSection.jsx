@@ -3,19 +3,19 @@ import { motion, useInView } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { TrendingUp, Users, Target, DollarSign, Zap } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { ChatGPTLogo, GeminiLogo, PerplexityLogo, ClaudeLogo, CopilotLogo } from "@/components/icons/AILogos";
+import { ChatGPTLogo, GeminiLogo, PerplexityLogo, ClaudeLogo } from "@/components/icons/AILogos";
 
 const graphData = [
-  { year: '2023', chatgpt: 100, gemini: 20, perplexity: 10, claude: 5, copilot: 15 },
-  { year: 'Q2 2023', chatgpt: 120, gemini: 30, perplexity: 15, claude: 8, copilot: 25 },
-  { year: 'Q3 2023', chatgpt: 150, gemini: 50, perplexity: 25, claude: 12, copilot: 40 },
-  { year: 'Q4 2023', chatgpt: 200, gemini: 80, perplexity: 40, claude: 20, copilot: 60 },
-  { year: '2024', chatgpt: 300, gemini: 150, perplexity: 80, claude: 40, copilot: 100 },
-  { year: 'Q2 2024', chatgpt: 450, gemini: 250, perplexity: 150, claude: 80, copilot: 180 },
-  { year: 'Q3 2024', chatgpt: 600, gemini: 400, perplexity: 250, claude: 150, copilot: 300 },
-  { year: 'Q4 2024', chatgpt: 750, gemini: 550, perplexity: 400, claude: 250, copilot: 450 },
-  { year: '2025', chatgpt: 900, gemini: 700, perplexity: 600, claude: 400, copilot: 600 },
-  { year: '2026', chatgpt: 1100, gemini: 900, perplexity: 800, claude: 600, copilot: 800 },
+  { year: '2023', chatgpt: 100, gemini: 20, perplexity: 10, claude: 5 },
+  { year: 'Q2 2023', chatgpt: 120, gemini: 30, perplexity: 15, claude: 8 },
+  { year: 'Q3 2023', chatgpt: 150, gemini: 50, perplexity: 25, claude: 12 },
+  { year: 'Q4 2023', chatgpt: 200, gemini: 80, perplexity: 40, claude: 20 },
+  { year: '2024', chatgpt: 300, gemini: 150, perplexity: 80, claude: 40 },
+  { year: 'Q2 2024', chatgpt: 450, gemini: 250, perplexity: 150, claude: 80 },
+  { year: 'Q3 2024', chatgpt: 600, gemini: 400, perplexity: 250, claude: 150 },
+  { year: 'Q4 2024', chatgpt: 750, gemini: 550, perplexity: 400, claude: 250 },
+  { year: '2025', chatgpt: 900, gemini: 700, perplexity: 600, claude: 400 },
+  { year: '2026', chatgpt: 1100, gemini: 900, perplexity: 800, claude: 600 },
 ];
 
 const stats = [
@@ -117,7 +117,6 @@ export default function GrowthGraphSection() {
                 { name: 'Gemini', icon: GeminiLogo, color: '#4E8BF5' },
                 { name: 'Perplexity', icon: PerplexityLogo, color: '#222222' },
                 { name: 'Claude', icon: ClaudeLogo, color: '#D97757' },
-                { name: 'Copilot', icon: CopilotLogo, color: '#EC4899' },
               ].map((platform) => (
                 <div key={platform.name} className="flex items-center gap-2">
                   <platform.icon className="w-5 h-5" />
@@ -147,10 +146,6 @@ export default function GrowthGraphSection() {
                   <linearGradient id="colorClaude" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#D97757" stopOpacity={0.2} />
                     <stop offset="95%" stopColor="#D97757" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorCopilot" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#EC4899" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#EC4899" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
@@ -185,23 +180,6 @@ export default function GrowthGraphSection() {
                       return (
                         <foreignObject x={props.cx - 12} y={props.cy - 12} width={24} height={24}>
                           <GeminiLogo className="w-full h-full" />
-                        </foreignObject>
-                      );
-                    }
-                    return <></>;
-                  }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="copilot"
-                  stroke="#EC4899"
-                  strokeWidth={3}
-                  fill="url(#colorCopilot)"
-                  dot={(props) => {
-                    if (props.index === graphData.length - 1) {
-                      return (
-                        <foreignObject x={props.cx - 12} y={props.cy - 12} width={24} height={24}>
-                          <CopilotLogo className="w-full h-full" />
                         </foreignObject>
                       );
                     }

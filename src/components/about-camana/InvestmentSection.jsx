@@ -23,13 +23,13 @@ export default function InvestmentSection() {
             <Rocket className="w-4 h-4 text-emerald-600" />
             <span className="text-sm text-emerald-600 font-medium">The Ask</span>
           </div>
-          
+
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Fueling the
             <span className="bg-gradient-to-r from-red-600 to-slate-500 bg-clip-text text-transparent"> Future of Search.</span>
           </h2>
         </motion.div>
-        
+
         {/* Investment Highlights */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -38,23 +38,23 @@ export default function InvestmentSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="grid md:grid-cols-3 gap-6 mb-12"
         >
-          <div className="bg-gradient-to-br from-red-50 to-white rounded-2xl border border-red-200 p-8 text-center">
+          <div className="bg-gradient-to-br from-red-50 to-white rounded-2xl border border-red-200 p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
             <span className="text-sm text-gray-500 uppercase tracking-widest">Raise</span>
             <p className="text-4xl font-bold text-gray-900 mt-2">$1,000,000</p>
             <span className="text-gray-500">USD</span>
           </div>
-          <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
+          <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
             <span className="text-sm text-gray-500 uppercase tracking-widest">Equity</span>
             <p className="text-4xl font-bold text-gray-900 mt-2">17%</p>
             <span className="text-gray-500">Offered</span>
           </div>
-          <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
+          <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
             <span className="text-sm text-gray-500 uppercase tracking-widest">Valuation</span>
             <p className="text-4xl font-bold text-gray-900 mt-2">~$5.8M</p>
             <span className="text-gray-500">Post-Money</span>
           </div>
         </motion.div>
-        
+
         {/* Use of Funds */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -67,7 +67,7 @@ export default function InvestmentSection() {
             <h3 className="text-xl font-semibold text-gray-900">Use of Funds</h3>
             <span className="text-sm text-gray-500">18-Month Runway</span>
           </div>
-          
+
           <div className="space-y-8">
             {fundAllocation.map((item, index) => (
               <motion.div

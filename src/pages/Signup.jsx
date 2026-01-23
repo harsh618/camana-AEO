@@ -223,41 +223,7 @@ export default function Signup() {
                 </div>
             </div>
 
-            {/* Right Panel - Branding */}
-            <div className="hidden lg:flex flex-1 bg-slate-900 relative">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(253,45,21,0.2),transparent_50%)]" />
-                <div className="flex-1 flex flex-col justify-center p-12 text-white relative z-10">
-                    <div className="max-w-md mx-auto space-y-8">
-                        <h2 className="text-4xl font-bold">See What You've Been Missing</h2>
 
-                        <div className="space-y-4">
-                            {[
-                                { title: 'Full Visibility Audit', desc: 'See where you rank on 5+ AI platforms' },
-                                { title: 'Competitor Analysis', desc: 'Track up to 10 competitors daily' },
-                                { title: 'Smart Recommendations', desc: 'AI-driven tips to improve citations' }
-                            ].map((item, i) => (
-                                <div key={i} className="flex gap-4 p-4 rounded-xl bg-white/5 border border-white/10">
-                                    <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                                        <CheckCircle2 className="w-5 h-5 text-red-500" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-semibold text-white">{item.title}</h3>
-                                        <p className="text-sm text-slate-400">{item.desc}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="p-6 rounded-2xl bg-gradient-to-br from-red-600 to-red-800 text-white">
-                            <div className="flex gap-1 mb-2">
-                                {[1, 2, 3, 4, 5].map(i => <Sparkles key={i} className="w-4 h-4 text-yellow-400 fill-current" />)}
-                            </div>
-                            <p className="italic mb-4">"We doubled our traffic from Claude and ChatGPT in just one month. Essential tool."</p>
-                            <div className="text-sm font-semibold opacity-80">- Alex R., Head of SEO</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 }

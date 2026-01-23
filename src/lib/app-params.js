@@ -1,54 +1,45 @@
-const isNode = typeof window === 'undefined';
-const windowObj = isNode ? { localStorage: new Map() } : window;
-const storage = windowObj.localStorage;
+/**
+ * Application Parameters
+ * Simplified configuration without Base44 dependencies
+ */
 
-const toSnakeCase = (str) => {
-	return str.replace(/([A-Z])/g, '_$1').toLowerCase();
-}
+// Helper to convert camelCase to snake_case
+const toSnakeCase = (str) => str.replace(/([A-Z])/g, '_$1').toLowerCase();
 
-const getAppParamValue = (paramName, { defaultValue = undefined, removeFromUrl = false } = {}) => {
-	if (isNode) {
-		return defaultValue;
-	}
-	const storageKey = `base44_${toSnakeCase(paramName)}`;
-	const urlParams = new URLSearchParams(window.location.search);
-	const searchParam = urlParams.get(paramName);
-	if (removeFromUrl) {
-		urlParams.delete(paramName);
-		const newUrl = `${window.location.pathname}${urlParams.toString() ? `?${urlParams.toString()}` : ""
-			}${window.location.hash}`;
-		window.history.replaceState({}, document.title, newUrl);
-	}
-	if (searchParam) {
-		storage.setItem(storageKey, searchParam);
-		return searchParam;
-	}
-	if (defaultValue) {
-		storage.setItem(storageKey, defaultValue);
-		return defaultValue;
-	}
-	const storedValue = storage.getItem(storageKey);
-	if (storedValue) {
-		return storedValue;
-	}
-	return null;
-}
+// Get app parameter from URL or localStorage
+const getAppParamValue = (paramName, { defaultValue = null } = {}) => {
+	const storage = typeof window !== 'undefined' ? window.localStorage : null;
+	const storageKey = `app_${toSnakeCase(paramName)}`;
 
-const getAppParams = () => {
-	if (getAppParamValue("clear_access_token") === 'true') {
-		storage.removeItem('base44_access_token');
-		storage.removeItem('token');
+	// First check URL params
+	if (typeof window !== 'undefined') {
+		const urlParams = new URLSearchParams(window.location.search);
+		const urlValue = urlParams.get(paramName);
+		if (urlValue) {
+			if (storage) storage.setItem(storageKey, urlValue);
+			return urlValue;
+		}
 	}
-	return {
-		appId: getAppParamValue("app_id", { defaultValue: import.meta.env.VITE_BASE44_APP_ID }),
-		token: getAppParamValue("access_token", { removeFromUrl: true }),
-		fromUrl: getAppParamValue("from_url", { defaultValue: window.location.href }),
-		functionsVersion: getAppParamValue("functions_version", { defaultValue: import.meta.env.VITE_BASE44_FUNCTIONS_VERSION }),
-		appBaseUrl: getAppParamValue("app_base_url", { defaultValue: import.meta.env.VITE_BASE44_APP_BASE_URL }),
+
+	// Then check localStorage
+	if (storage) {
+		const storedValue = storage.getItem(storageKey);
+		if (storedValue) return storedValue;
 	}
-}
 
+	return defaultValue;
+};
 
+// Clear all stored app parameters
+const clearAppParams = () => {
+	const storage = typeof window !== 'undefined' ? window.localStorage : null;
+	if (storage) {
+		storage.removeItem('app_access_token');
+	}
+};
+
+// Export app configuration
 export const appParams = {
-	...getAppParams()
-}
+	appBaseUrl: getAppParamValue("app_base_url", { defaultValue: 'http://localhost:5173' }),
+	clearAppParams
+};

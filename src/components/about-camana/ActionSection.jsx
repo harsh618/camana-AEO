@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { base44 } from '@/api/base44Client';
+import { waitlistService } from '@/api/localApi';
 
 export default function ActionSection() {
   const [activeTab, setActiveTab] = useState('brand');
@@ -32,23 +32,31 @@ export default function ActionSection() {
   const handleBrandSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await base44.entities.WaitlistSignup.create({
-      ...brandForm,
-      signup_type: 'brand'
-    });
+    try {
+      await waitlistService.create({
+        ...brandForm,
+        signup_type: 'brand'
+      });
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
     setIsSubmitting(false);
-    setSubmitted(true);
   };
 
   const handleInvestorSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await base44.entities.WaitlistSignup.create({
-      ...investorForm,
-      signup_type: 'investor'
-    });
+    try {
+      await waitlistService.create({
+        ...investorForm,
+        signup_type: 'investor'
+      });
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
     setIsSubmitting(false);
-    setSubmitted(true);
   };
 
   if (submitted) {
@@ -94,8 +102,8 @@ export default function ActionSection() {
             <button
               onClick={() => setActiveTab('brand')}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'brand'
-                  ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
-                  : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
+                : 'text-gray-600 hover:text-gray-900'
                 }`}
             >
               <Building2 className="w-4 h-4" />
@@ -104,8 +112,8 @@ export default function ActionSection() {
             <button
               onClick={() => setActiveTab('investor')}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'investor'
-                  ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
-                  : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-md'
+                : 'text-gray-600 hover:text-gray-900'
                 }`}
             >
               <Briefcase className="w-4 h-4" />

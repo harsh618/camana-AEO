@@ -6,10 +6,11 @@ import { Sparkles, Menu, X, LogOut } from 'lucide-react';
 import { useAuth } from "@/lib/AuthContext";
 
 const navLinks = [
-  { label: 'Features', href: '#features' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'Features', href: '/#features', isScroll: true },
+  { label: 'How It Works', href: '/#how-it-works', isScroll: true },
+  { label: 'Pricing', href: '/#pricing', isScroll: true },
+  { label: 'About Us', href: '/about-us', isScroll: false },
+  { label: 'FAQ', href: '/#faq', isScroll: true },
 ];
 
 export default function Header() {
@@ -25,11 +26,17 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (e, href) => {
-    e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleNavClick = (e, link) => {
+    if (link.isScroll) {
+      if (window.location.pathname !== '/') {
+        // If not on home page, normal navigation will happen via href
+        return;
+      }
+      e.preventDefault();
+      const element = document.querySelector(link.href.replace('/', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
     setIsMobileMenuOpen(false);
   };
@@ -41,12 +48,12 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <a href="#" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" />
               <span className={`text-xl font-bold transition-colors ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
                 Searchlyst
               </span>
-            </a>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-8">
@@ -54,7 +61,7 @@ export default function Header() {
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={(e) => scrollToSection(e, link.href)}
+                  onClick={(e) => handleNavClick(e, link)}
                   className={`text-sm font-medium transition-colors hover:text-red-600 ${isScrolled ? 'text-slate-600' : 'text-slate-600'
                     }`}
                 >
@@ -158,7 +165,7 @@ export default function Header() {
                       <a
                         key={link.label}
                         href={link.href}
-                        onClick={(e) => scrollToSection(e, link.href)}
+                        onClick={(e) => handleNavClick(e, link)}
                         className="flex items-center px-4 py-3 text-slate-700 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors font-medium"
                       >
                         {link.label}

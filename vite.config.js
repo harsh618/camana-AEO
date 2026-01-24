@@ -1,5 +1,7 @@
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 // Export an async config so we can optionally load @base44/vite-plugin
 export default defineConfig(async () => {

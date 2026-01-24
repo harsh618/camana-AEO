@@ -1,0 +1,43 @@
+name: Deploy to Production (searchlyst.com)
+
+on:
+  push:
+    branches: [ prod ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Prod Server
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          # Setup SSH
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
+          
+          # Deploy
+          ssh -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST << 'EOF'
+            cd ~/apps/camana-prod
+            
+            # Fetch and reset
+            git fetch origin prod
+            git reset --hard origin/prod
+            
+            # Install and Build
+            npm ci
+            npm run build
+            
+            # Copy to Web Root
+            sudo cp -r dist/* /var/www/searchlyst/html/
+            
+            # Reload Nginx (optional but good practice)
+            # sudo systemctl reload nginx
+          EOF

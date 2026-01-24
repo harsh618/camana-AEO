@@ -1,0 +1,46 @@
+name: Deploy to Dev (dev.searchlyst.com)
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Dev Server
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          # Setup SSH
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
+          
+          # Deploy
+          ssh -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST << 'EOF'
+            # Stop verify failure if directories don't exist yet, manual setup guide should cover it but safe to fail?
+            # We assume directory exists as per guide.
+            cd ~/apps/camana-dev
+            
+            # Fetch and reset to match origin/dev (hard reset is safer for deployments)
+            git fetch origin dev
+            git reset --hard origin/dev
+            
+            # Install and Build
+            npm ci
+            npm run build
+            
+            # Copy to Web Root
+            # Ensure target exists or is created by cp? Guide says mkdir -p /var/www/dev-searchlyst/html
+            sudo cp -r dist/* /var/www/dev-searchlyst/html/
+            
+            # No need to restart nginx if only static files changed, but reload is safe
+            # sudo systemctl reload nginx
+          EOF

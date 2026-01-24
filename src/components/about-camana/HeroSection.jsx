@@ -2,8 +2,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 export default function HeroSection({ onGetStarted }) {
+  const navigate = useNavigate();
+
+  const handleTrialClick = () => {
+    navigate('/signup');
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
       {/* Subtle gradient background */}
@@ -33,7 +40,7 @@ export default function HeroSection({ onGetStarted }) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              onClick={onGetStarted}
+              onClick={handleTrialClick}
               className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white px-8 py-6 text-lg rounded-full shadow-lg shadow-red-500/25 transition-all duration-300 hover:shadow-red-500/40 hover:scale-105"
             >
               Start Free 7 Day Trial

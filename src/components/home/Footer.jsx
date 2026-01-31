@@ -1,14 +1,12 @@
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Twitter, Linkedin, Youtube, Mail, ArrowRight, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const footerLinks = {
   product: [
     { label: 'Features', href: '#features' },
     { label: 'Pricing', href: '#pricing' },
     { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Case Studies', href: '#testimonials' },
+    { label: 'Case Studies', href: '#' },
     { label: 'API Documentation', href: '#' }
   ],
   resources: [
@@ -26,123 +24,132 @@ const footerLinks = {
   ]
 };
 
-const socialLinks = [
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Youtube, href: '#', label: 'YouTube' }
-];
-
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-slate-100 relative overflow-hidden">
-      {/* Subtle Background Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(253,45,21,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(253,45,21,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <footer className="bg-[#020202]/40 border-t border-[#23293c]">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[175px]">
         {/* Main Footer Content */}
-        <div className="py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
+        <div className="py-16 flex flex-col lg:flex-row gap-12 lg:gap-[201px]">
           {/* Brand Column */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-6">
-              <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" />
-              <span className="text-xl font-bold text-slate-900">Searchlyst</span>
+          <div className="flex-shrink-0">
+            <div className="flex items-center gap-[5px] mb-4">
+              <img src="/logos/searchlyst-icon.png" alt="Searchlyst" className="w-8 h-8 object-cover" />
+              <span className="text-[20px] font-semibold text-[#ededed]" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                searchlyst
+              </span>
             </div>
-            <p className="text-slate-500 text-sm leading-relaxed mb-6">
+            <p className="text-[14px] font-medium text-[#ededed] max-w-[194px] mb-4 leading-relaxed">
               Making brands visible in the age of AI search. Track, optimize, and dominate AI search results.
             </p>
+            
+            {/* Newsletter Input */}
+            <div className="relative">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full max-w-[171px] px-4 py-2 bg-transparent border border-[#ededed]/30 rounded-lg text-[14px] font-medium text-[#ededed] placeholder:text-[#ededed] outline-none focus:border-[#ef2b15]/50"
+              />
+            </div>
+          </div>
 
-            {/* Newsletter */}
-            <div className="space-y-3">
-              <p className="text-sm font-medium text-slate-900">Subscribe to our newsletter</p>
-              <div className="flex gap-2">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-lg"
-                />
-                <Button size="icon" className="bg-red-600 hover:bg-red-500 rounded-lg">
-                  <ArrowRight className="w-4 h-4 text-white" />
-                </Button>
+          {/* Links Section */}
+          <div className="flex-1 flex flex-wrap gap-12 lg:gap-[78px]">
+            {/* Product */}
+            <div className="min-w-[127px]">
+              <h4 className="text-[16px] font-semibold text-white mb-6">Product</h4>
+              <ul className="space-y-[18px]">
+                {footerLinks.product.map((link, index) => (
+                  <li key={index}>
+                    <a href={link.href} className="text-[14px] font-normal text-[#ededed] hover:text-[#ef2b15] transition-colors">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Resources */}
+            <div className="min-w-[107px]">
+              <h4 className="text-[16px] font-semibold text-white mb-6">Resources</h4>
+              <ul className="space-y-[18px]">
+                {footerLinks.resources.map((link, index) => (
+                  <li key={index}>
+                    <a href={link.href} className="text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div className="min-w-[115px]">
+              <h4 className="text-[16px] font-semibold text-white mb-6">Company</h4>
+              <ul className="space-y-[18px]">
+                {footerLinks.company.map((link, index) => (
+                  <li key={index}>
+                    {link.href.startsWith('/') ? (
+                      <Link to={link.href} className="text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors">
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className="text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors">
+                        {link.label}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Connect */}
+            <div className="min-w-[113px]">
+              <h4 className="text-[16px] font-semibold text-white mb-6">Connect</h4>
+              <div className="flex items-center gap-[10px]">
+                {/* Instagram */}
+                <a href="#" className="w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="#ededed" strokeWidth="1.5"/>
+                    <circle cx="12" cy="12" r="4" stroke="#ededed" strokeWidth="1.5"/>
+                    <circle cx="18" cy="6" r="1.5" fill="#ededed"/>
+                  </svg>
+                </a>
+                {/* X (Twitter) */}
+                <a href="#" className="w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="#ededed"/>
+                  </svg>
+                </a>
+                {/* LinkedIn */}
+                <a href="#" className="w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <rect x="2" y="2" width="20" height="20" rx="2" stroke="#ededed" strokeWidth="1.5"/>
+                    <path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 114 0v4M11 10v7" stroke="#ededed" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                </a>
+                {/* Reddit */}
+                <a href="#" className="w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="#ededed" strokeWidth="1.5"/>
+                    <circle cx="8" cy="12" r="1.5" fill="#ededed"/>
+                    <circle cx="16" cy="12" r="1.5" fill="#ededed"/>
+                    <path d="M8 16c1.333 1.333 5.333 1.333 8 0" stroke="#ededed" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                </a>
               </div>
             </div>
-          </div>
-
-          {/* Product Links */}
-          <div>
-            <h4 className="font-semibold text-slate-900 mb-4">Product</h4>
-            <ul className="space-y-3">
-              {footerLinks.product.map((link, index) => (
-                <li key={index}>
-                  <a href={link.href} className="text-slate-500 hover:text-red-600 text-sm transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources Links */}
-          <div>
-            <h4 className="font-semibold text-slate-900 mb-4">Resources</h4>
-            <ul className="space-y-3">
-              {footerLinks.resources.map((link, index) => (
-                <li key={index}>
-                  <a href={link.href} className="text-slate-500 hover:text-red-600 text-sm transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Links */}
-          <div>
-            <h4 className="font-semibold text-slate-900 mb-4">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link, index) => (
-                <li key={index}>
-                  <a href={link.href} className="text-slate-500 hover:text-red-600 text-sm transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Connect */}
-          <div>
-            <h4 className="font-semibold text-slate-900 mb-4">Connect</h4>
-            <div className="flex gap-3 mb-6">
-              {socialLinks.map((social, index) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={index}
-                    href={social.href}
-                    aria-label={social.label}
-                    className="w-10 h-10 rounded-lg bg-slate-100 hover:bg-red-50 flex items-center justify-center transition-colors"
-                  >
-                    <Icon className="w-5 h-5 text-slate-600" />
-                  </a>
-                );
-              })}
-            </div>
-            <a href="mailto:hello@aidiscovery.com" className="flex items-center gap-2 text-slate-500 hover:text-red-600 text-sm transition-colors">
-              <Mail className="w-4 h-4" />
-              hello@aidiscovery.com
-            </a>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="py-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-sm">
+        <div className="py-6 border-t border-[#23293c]/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-[14px] font-medium text-[#ededed]">
             © 2026 Searchlyst. Making brands visible in the age of AI search. v2.1
           </p>
-          <div className="flex items-center gap-6 text-sm">
-            <a href="#" className="text-slate-500 hover:text-red-600 transition-colors">Privacy</a>
-            <a href="#" className="text-slate-500 hover:text-red-600 transition-colors">Terms</a>
-            <a href="#" className="text-slate-500 hover:text-red-600 transition-colors">Cookies</a>
+          <div className="flex items-center gap-8 text-[14px] font-medium">
+            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">Privacy</a>
+            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">Terms</a>
+            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">Cookies</a>
           </div>
         </div>
       </div>

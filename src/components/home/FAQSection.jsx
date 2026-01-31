@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { HelpCircle, ChevronDown, MessageCircle } from 'lucide-react';
 
 const faqs = [
   {
@@ -20,7 +19,7 @@ const faqs = [
     answer: "No. We provide plain-English recommendations with one-click fixes where possible. Our team can also handle technical implementation for Enterprise clients."
   },
   {
-    question: "Can you guarantee I'll rank in AI results?",
+    question: "Can you guarantee I'll rank in AI results??",
     answer: "We can't guarantee specific rankings (no one can), but we can guarantee you'll have the technical foundation and content strategy that AI platforms prefer for citations."
   },
   {
@@ -43,60 +42,74 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
-    <section id="faq" ref={ref} className="py-24 bg-white relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(253,45,21,0.03),transparent_50%)]" />
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
+    <section id="faq" ref={ref} className="py-16 bg-black relative overflow-hidden">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[120px]">
+        {/* Badge - Updated with glowing red dot */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="flex justify-center mb-6"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 text-red-600 text-sm font-medium mb-6">
-            <HelpCircle className="w-4 h-4" />
-            FAQ
-          </span>
-          <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
-            Common Questions About{' '}
-            <span className="bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
-              AI Search Optimization
-            </span>
-          </h2>
-          <p className="text-xl text-slate-600">
-            Everything you need to know about getting your brand discovered in AI search.
-          </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[30px] border border-[#ef2b15] bg-[#fd2d15]/10">
+            <span 
+              className="w-[9px] h-[9px] rounded-full bg-[#FD2D15]" 
+              style={{ 
+                boxShadow: '0 0 8px 2px rgba(253, 45, 21, 0.6), 0 0 4px 1px rgba(253, 45, 21, 0.8)',
+                filter: 'blur(0.5px)'
+              }} 
+            />
+            <span className="text-[18px] font-semibold text-[#ef2b15]/80">FAQ</span>
+          </div>
         </motion.div>
 
+        {/* Headline */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.1 }}
+          className="text-center mb-4"
+        >
+          <h2 className="text-[48px] sm:text-[64px] font-bold leading-tight">
+            <span className="text-white">Common Questions About </span>
+            <span className="text-[#ef2b15]">AI Search Optimization</span>
+          </h2>
+        </motion.div>
+
+        {/* Subheadline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.2 }}
+          className="text-[18px] font-medium text-[#ededed]/90 text-center max-w-[684px] mx-auto mb-12"
+        >
+          Everything you need to know about getting your brand discovered in AI search.
+        </motion.p>
+
         {/* FAQ Accordion */}
-        <div className="space-y-4">
+        <div className="max-w-[838px] mx-auto space-y-[15px]">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
+              transition={{ delay: 0.3 + index * 0.05 }}
             >
               <div
-                className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden ${openIndex === index
-                  ? 'border-red-200 shadow-lg shadow-red-500/10'
-                  : 'border-slate-100 hover:border-slate-200'
-                  }`}
+                className="rounded-[25px] border border-[#ededed]/15 bg-[#b0b0b0]/3 shadow-[0px_4px_4px_rgba(255,255,255,0.06)] overflow-hidden"
               >
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   className="w-full flex items-center justify-between p-6 text-left"
                 >
-                  <span className="text-lg font-semibold text-slate-900 pr-8">{faq.question}</span>
+                  <span className="text-[20px] font-semibold text-[#ededed] pr-4">{faq.question}</span>
                   <motion.div
                     animate={{ rotate: openIndex === index ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
-                    className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${openIndex === index ? 'bg-red-100' : 'bg-slate-100'
-                      }`}
+                    className="flex-shrink-0"
                   >
-                    <ChevronDown className={`w-5 h-5 ${openIndex === index ? 'text-red-600' : 'text-slate-500'}`} />
+                    <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
+                      <path d="M1 1L7.5 9L14 1" stroke="#ededed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
                   </motion.div>
                 </button>
 
@@ -109,8 +122,8 @@ export default function FAQSection() {
                       transition={{ duration: 0.3 }}
                     >
                       <div className="px-6 pb-6">
-                        <div className="h-px bg-slate-100 mb-4" />
-                        <p className="text-slate-600 leading-relaxed">{faq.answer}</p>
+                        <div className="h-px bg-[#ededed]/10 mb-4" />
+                        <p className="text-[16px] text-[#ededed]/80 leading-relaxed">{faq.answer}</p>
                       </div>
                     </motion.div>
                   )}
@@ -124,17 +137,18 @@ export default function FAQSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
+          transition={{ delay: 0.8 }}
           className="mt-12 text-center"
         >
-          <p className="text-slate-600 mb-4">Still have questions?</p>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 font-medium transition-colors"
-          >
-            <MessageCircle className="w-5 h-5" />
+          <p className="text-[14px] font-medium text-[#ededed] mb-4">Still have questions?</p>
+          <button className="inline-flex items-center gap-2 px-6 py-3 rounded-[30px] border border-[#ededed]/50 text-[15px] font-medium text-[#ededed] hover:bg-[#ededed]/5 transition-all">
+            <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+              <rect x="0.5" y="0.5" width="16" height="12" rx="1.5" stroke="#ededed" strokeOpacity="0.95"/>
+              <path d="M1 14L5 10" stroke="#ededed" strokeOpacity="0.95" strokeLinecap="round"/>
+              <path d="M16 14L12 10" stroke="#ededed" strokeOpacity="0.95" strokeLinecap="round"/>
+            </svg>
             Chat with our team
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>

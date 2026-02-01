@@ -50,9 +50,10 @@ export default function Header() {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" />
-              <span className={`text-xl font-bold transition-colors ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
+              <img src="/brand-full-logo.png" alt="AI Discovery" className="w-32 h-36 object-contain" />
+              {/* <span className={`text-xl font-bold transition-colors ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
                 Searchlyst
-              </span>
+              </span> */}
             </Link>
 
             {/* Desktop Navigation */}

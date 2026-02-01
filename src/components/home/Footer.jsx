@@ -1,5 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const logo = [
+  { name: "instagram", logo: "../public/logos/socialMedia/instagram.png" },
+  { name: "twitter", logo: "../public/logos/socialMedia/x_logo.png" },
+  { name: "linkedin", logo: "../public/logos/socialMedia/linkedin.png" },
+  { name: "reddit", logo: "../public/logos/socialMedia/reddit.png" },
+];
 
 const footerLinks = {
   product: [
@@ -27,18 +35,19 @@ const footerLinks = {
 export default function Footer() {
   return (
     <footer className="bg-[#020202]/40 border-t border-[#23293c]">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[175px]">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[175px]">
         {/* Main Footer Content */}
-        <div className="py-16 flex flex-col lg:flex-row gap-12 lg:gap-[201px]">
+        <div className="py-10 sm:py-12 md:py-14 lg:py-16 flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 xl:gap-[201px]">
           {/* Brand Column */}
-          <div className="flex-shrink-0">
-            <div className="flex items-center gap-[5px] mb-4">
-              <img src="/logos/searchlyst-icon.png" alt="Searchlyst" className="w-8 h-8 object-cover" />
-              <span className="text-[20px] font-semibold text-[#ededed]" style={{ fontFamily: 'Roboto, sans-serif' }}>
-                searchlyst
-              </span>
+          <div className="flex-shrink-0 w-full lg:w-auto">
+            <div className="flex items-center gap-[5px] mb-3 sm:mb-4">
+              <img 
+                src="/logos/searchlyst-dark.svg" 
+                alt="Searchlyst" 
+                className="w-36 sm:w-44 md:w-48 h-9 sm:h-11 md:h-12 object-cover" 
+              />
             </div>
-            <p className="text-[14px] font-medium text-[#ededed] max-w-[194px] mb-4 leading-relaxed">
+            <p className="text-[13px] sm:text-[14px] font-medium text-[#ededed] max-w-full sm:max-w-[250px] lg:max-w-[194px] mb-4 sm:mb-5 leading-relaxed">
               Making brands visible in the age of AI search. Track, optimize, and dominate AI search results.
             </p>
             
@@ -47,20 +56,25 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full max-w-[171px] px-4 py-2 bg-transparent border border-[#ededed]/30 rounded-lg text-[14px] font-medium text-[#ededed] placeholder:text-[#ededed] outline-none focus:border-[#ef2b15]/50"
+                className="w-full sm:w-auto max-w-full sm:max-w-[240px] lg:max-w-[171px] px-3 sm:px-4 py-2 sm:py-2.5 bg-transparent border border-[#ededed]/30 rounded-lg text-[13px] sm:text-[14px] font-medium text-[#ededed] placeholder:text-[#ededed]/70 outline-none focus:border-[#ef2b15]/50 transition-colors"
               />
             </div>
           </div>
 
           {/* Links Section */}
-          <div className="flex-1 flex flex-wrap gap-12 lg:gap-[78px]">
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 md:gap-12 lg:gap-16 xl:gap-[78px]">
             {/* Product */}
-            <div className="min-w-[127px]">
-              <h4 className="text-[16px] font-semibold text-white mb-6">Product</h4>
-              <ul className="space-y-[18px]">
+            <div className="min-w-0">
+              <h4 className="text-[15px] sm:text-[16px] font-semibold text-white mb-4 sm:mb-5 md:mb-6">
+                Product
+              </h4>
+              <ul className="space-y-3 sm:space-y-[18px]">
                 {footerLinks.product.map((link, index) => (
                   <li key={index}>
-                    <a href={link.href} className="text-[14px] font-normal text-[#ededed] hover:text-[#ef2b15] transition-colors">
+                    <a 
+                      href={link.href} 
+                      className="text-[13px] sm:text-[14px] font-normal text-[#ededed] hover:text-[#ef2b15] transition-colors block"
+                    >
                       {link.label}
                     </a>
                   </li>
@@ -69,12 +83,17 @@ export default function Footer() {
             </div>
 
             {/* Resources */}
-            <div className="min-w-[107px]">
-              <h4 className="text-[16px] font-semibold text-white mb-6">Resources</h4>
-              <ul className="space-y-[18px]">
+            <div className="min-w-0">
+              <h4 className="text-[15px] sm:text-[16px] font-semibold text-white mb-4 sm:mb-5 md:mb-6">
+                Resources
+              </h4>
+              <ul className="space-y-3 sm:space-y-[18px]">
                 {footerLinks.resources.map((link, index) => (
                   <li key={index}>
-                    <a href={link.href} className="text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors">
+                    <a 
+                      href={link.href} 
+                      className="text-[13px] sm:text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors block"
+                    >
                       {link.label}
                     </a>
                   </li>
@@ -83,17 +102,25 @@ export default function Footer() {
             </div>
 
             {/* Company */}
-            <div className="min-w-[115px]">
-              <h4 className="text-[16px] font-semibold text-white mb-6">Company</h4>
-              <ul className="space-y-[18px]">
+            <div className="min-w-0">
+              <h4 className="text-[15px] sm:text-[16px] font-semibold text-white mb-4 sm:mb-5 md:mb-6">
+                Company
+              </h4>
+              <ul className="space-y-3 sm:space-y-[18px]">
                 {footerLinks.company.map((link, index) => (
                   <li key={index}>
                     {link.href.startsWith('/') ? (
-                      <Link to={link.href} className="text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors">
+                      <Link 
+                        to={link.href} 
+                        className="text-[13px] sm:text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors block"
+                      >
                         {link.label}
                       </Link>
                     ) : (
-                      <a href={link.href} className="text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors">
+                      <a 
+                        href={link.href} 
+                        className="text-[13px] sm:text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors block"
+                      >
                         {link.label}
                       </a>
                     )}
@@ -103,38 +130,73 @@ export default function Footer() {
             </div>
 
             {/* Connect */}
-            <div className="min-w-[113px]">
-              <h4 className="text-[16px] font-semibold text-white mb-6">Connect</h4>
-              <div className="flex items-center gap-[10px]">
+            <div className="min-w-0">
+              <h4 className="text-[15px] sm:text-[16px] font-semibold text-white mb-4 sm:mb-5 md:mb-6">
+                Connect
+              </h4>
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-[5px] flex-wrap">
                 {/* Instagram */}
-                <a href="#" className="w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="#ededed" strokeWidth="1.5"/>
-                    <circle cx="12" cy="12" r="4" stroke="#ededed" strokeWidth="1.5"/>
-                    <circle cx="18" cy="6" r="1.5" fill="#ededed"/>
-                  </svg>
+                <a 
+                  href="#" 
+                  className="w-6 h-6 sm:w-10 sm:h-10 md:w-5 md:h-5 flex items-center justify-center hover:opacity-80 transition-opacity"
+                  aria-label="Instagram"
+                >
+                  <motion.img
+                    src={logo[0].logo}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="w-full h-full object-contain"
+                    alt="Instagram"
+                  />
                 </a>
+                
                 {/* X (Twitter) */}
-                <a href="#" className="w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="#ededed"/>
-                  </svg>
+                <a 
+                  href="#" 
+                  className="w-6 h-6 sm:w-10 sm:h-10 md:w-5 md:h-5 flex items-center justify-center hover:opacity-80 transition-opacity"
+                  aria-label="X (Twitter)"
+                >
+                  <motion.img
+                    src={logo[1].logo}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="w-full h-full object-contain"
+                    alt="X (Twitter)"
+                  />
                 </a>
+                
                 {/* LinkedIn */}
-                <a href="#" className="w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <rect x="2" y="2" width="20" height="20" rx="2" stroke="#ededed" strokeWidth="1.5"/>
-                    <path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 114 0v4M11 10v7" stroke="#ededed" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
+                <a 
+                  href="#" 
+                  className="w-9 h-9 sm:w-10 sm:h-10 md:w-7 md:h-7 flex items-center justify-center hover:opacity-80 transition-opacity"
+                  aria-label="LinkedIn"
+                >
+                  <motion.img
+                    src={logo[2].logo}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="w-full h-full object-contain"
+                    alt="LinkedIn"
+                  />
                 </a>
+                
                 {/* Reddit */}
-                <a href="#" className="w-6 h-6 flex items-center justify-center hover:opacity-80 transition-opacity">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="#ededed" strokeWidth="1.5"/>
-                    <circle cx="8" cy="12" r="1.5" fill="#ededed"/>
-                    <circle cx="16" cy="12" r="1.5" fill="#ededed"/>
-                    <path d="M8 16c1.333 1.333 5.333 1.333 8 0" stroke="#ededed" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
+                <a 
+                  href="#" 
+                  className="w-6 h-6 sm:w-10 sm:h-10 md:w-5 md:h-5 flex items-center justify-center hover:opacity-80 transition-opacity"
+                  aria-label="Reddit"
+                >
+                  <motion.img
+                    src={logo[3].logo}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="w-full h-full object-contain"
+                    alt="Reddit"
+                  />
                 </a>
               </div>
             </div>
@@ -142,14 +204,20 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="py-6 border-t border-[#23293c]/50 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[14px] font-medium text-[#ededed]">
+        <div className="py-4 sm:py-5 md:py-6 border-t border-[#23293c]/50 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+          <p className="text-[12px] sm:text-[13px] md:text-[14px] font-medium text-[#ededed] text-center sm:text-left">
             © 2026 Searchlyst. Making brands visible in the age of AI search. v2.1
           </p>
-          <div className="flex items-center gap-8 text-[14px] font-medium">
-            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">Privacy</a>
-            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">Terms</a>
-            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">Cookies</a>
+          <div className="flex items-center gap-4 sm:gap-6 md:gap-8 text-[12px] sm:text-[13px] md:text-[14px] font-medium">
+            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">
+              Privacy
+            </a>
+            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">
+              Terms
+            </a>
+            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">
+              Cookies
+            </a>
           </div>
         </div>
       </div>

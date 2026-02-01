@@ -369,7 +369,7 @@ export default function PricingSection() {
       </div>
 
       {/* Divider line */}
-      <div className="mt-16 flex justify-center">
+      <div className="mt-16 mb-0 flex justify-center">
         <div className="w-[90%] sm:w-[681px] max-w-[681px] h-[2px] bg-[#2b2b2b] blur-[4px]" />
       </div>
     </section>

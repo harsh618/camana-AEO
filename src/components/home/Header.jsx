@@ -59,7 +59,7 @@ export default function Header() {
           <div className="flex items-center justify-between h-16 lg:h-[76px]">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" />
+              {/* <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" /> */}
               <img src="/brand-full-logo.png" alt="AI Discovery" className="w-32 h-36 object-contain" />
               {/* <span className={`text-xl font-bold transition-colors ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
                 Searchlyst

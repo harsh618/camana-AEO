@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const logo = [
   { name: "instagram", logo: "../public/logos/socialMedia/instagram.png" },
@@ -11,25 +11,25 @@ const logo = [
 
 const footerLinks = {
   product: [
-    { label: 'Features', href: '#features' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Case Studies', href: '#' },
-    { label: 'API Documentation', href: '#' }
+    { label: "Features", href: "#features" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Case Studies", href: "#" },
+    { label: "API Documentation", href: "#" },
   ],
   resources: [
-    { label: 'Blog', href: '#' },
-    { label: 'AI Search Guide', href: '#' },
-    { label: 'Help Center', href: '#' },
-    { label: 'Status Page', href: '#' }
+    { label: "Blog", href: "#" },
+    { label: "AI Search Guide", href: "#" },
+    { label: "Help Center", href: "#" },
+    { label: "Status Page", href: "#" },
   ],
   company: [
-    { label: 'About Us', href: '/about-us' },
-    { label: 'Careers', href: '#' },
-    { label: 'Contact', href: '#' },
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' }
-  ]
+    { label: "About Us", href: "/about-us" },
+    { label: "Careers", href: "#" },
+    { label: "Contact", href: "#" },
+    { label: "Privacy Policy", href: "#" },
+    { label: "Terms of Service", href: "#" },
+  ],
 };
 
 export default function Footer() {
@@ -41,14 +41,18 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
             <div className="flex items-center gap-2 mb-6">
-              <img src="/brand-logo.png" alt="AI Discovery" className="w-10 h-10 object-contain" />
-              <img src="/brand-full-logo.png" alt="AI Discovery" className="w-32 h-8 object-contain" />
+              <img
+                src="/brand-full-logo.png"
+                alt="AI Discovery"
+                className="w-32 h-8 object-contain"
+              />
               {/* <span className="text-xl font-bold text-slate-900">Searchlyst</span> */}
             </div>
             <p className="text-[13px] sm:text-[14px] font-medium text-[#ededed] max-w-full sm:max-w-[250px] lg:max-w-[194px] mb-4 sm:mb-5 leading-relaxed">
-              Making brands visible in the age of AI search. Track, optimize, and dominate AI search results.
+              Making brands visible in the age of AI search. Track, optimize,
+              and dominate AI search results.
             </p>
-            
+
             {/* Newsletter Input */}
             <div className="relative">
               <input
@@ -69,8 +73,8 @@ export default function Footer() {
               <ul className="space-y-3 sm:space-y-[18px]">
                 {footerLinks.product.map((link, index) => (
                   <li key={index}>
-                    <a 
-                      href={link.href} 
+                    <a
+                      href={link.href}
                       className="text-[13px] sm:text-[14px] font-normal text-[#ededed] hover:text-[#ef2b15] transition-colors block"
                     >
                       {link.label}
@@ -88,8 +92,8 @@ export default function Footer() {
               <ul className="space-y-3 sm:space-y-[18px]">
                 {footerLinks.resources.map((link, index) => (
                   <li key={index}>
-                    <a 
-                      href={link.href} 
+                    <a
+                      href={link.href}
                       className="text-[13px] sm:text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors block"
                     >
                       {link.label}
@@ -107,16 +111,16 @@ export default function Footer() {
               <ul className="space-y-3 sm:space-y-[18px]">
                 {footerLinks.company.map((link, index) => (
                   <li key={index}>
-                    {link.href.startsWith('/') ? (
-                      <Link 
-                        to={link.href} 
+                    {link.href.startsWith("/") ? (
+                      <Link
+                        to={link.href}
                         className="text-[13px] sm:text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors block"
                       >
                         {link.label}
                       </Link>
                     ) : (
-                      <a 
-                        href={link.href} 
+                      <a
+                        href={link.href}
                         className="text-[13px] sm:text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors block"
                       >
                         {link.label}
@@ -134,8 +138,8 @@ export default function Footer() {
               </h4>
               <div className="flex items-center gap-2 sm:gap-3 md:gap-[5px] flex-wrap">
                 {/* Instagram */}
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="w-6 h-6 sm:w-10 sm:h-10 md:w-5 md:h-5 flex items-center justify-center hover:opacity-80 transition-opacity"
                   aria-label="Instagram"
                 >
@@ -148,10 +152,10 @@ export default function Footer() {
                     alt="Instagram"
                   />
                 </a>
-                
+
                 {/* X (Twitter) */}
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="w-6 h-6 sm:w-10 sm:h-10 md:w-5 md:h-5 flex items-center justify-center hover:opacity-80 transition-opacity"
                   aria-label="X (Twitter)"
                 >
@@ -164,10 +168,10 @@ export default function Footer() {
                     alt="X (Twitter)"
                   />
                 </a>
-                
+
                 {/* LinkedIn */}
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="w-9 h-9 sm:w-10 sm:h-10 md:w-7 md:h-7 flex items-center justify-center hover:opacity-80 transition-opacity"
                   aria-label="LinkedIn"
                 >
@@ -180,10 +184,10 @@ export default function Footer() {
                     alt="LinkedIn"
                   />
                 </a>
-                
+
                 {/* Reddit */}
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="w-6 h-6 sm:w-10 sm:h-10 md:w-5 md:h-5 flex items-center justify-center hover:opacity-80 transition-opacity"
                   aria-label="Reddit"
                 >
@@ -204,16 +208,26 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="py-4 sm:py-5 md:py-6 border-t border-[#23293c]/50 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           <p className="text-[12px] sm:text-[13px] md:text-[14px] font-medium text-[#ededed] text-center sm:text-left">
-            © 2026 Searchlyst. Making brands visible in the age of AI search. v2.1
+            © 2026 Searchlyst. Making brands visible in the age of AI search.
+            v2.1
           </p>
           <div className="flex items-center gap-4 sm:gap-6 md:gap-8 text-[12px] sm:text-[13px] md:text-[14px] font-medium">
-            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">
+            <a
+              href="#"
+              className="text-[#ededed] hover:text-[#ef2b15] transition-colors"
+            >
               Privacy
             </a>
-            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">
+            <a
+              href="#"
+              className="text-[#ededed] hover:text-[#ef2b15] transition-colors"
+            >
               Terms
             </a>
-            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">
+            <a
+              href="#"
+              className="text-[#ededed] hover:text-[#ef2b15] transition-colors"
+            >
               Cookies
             </a>
           </div>

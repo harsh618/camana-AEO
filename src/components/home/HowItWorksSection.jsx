@@ -94,8 +94,10 @@ const CustomDot = ({ cx, cy, payload, dataKey }) => {
   );
 };
 
+import industryInsightsIcon from '../../assets/icons/industry-insights.svg';
+
 const logo = [
-  { name: "industryInsights", logo: "../public/icons/industry-insights.svg" },
+  { name: "industryInsights", logo: industryInsightsIcon },
 ];
 
 export default function HowItWorksSection() {

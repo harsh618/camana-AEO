@@ -1,12 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import instagramIcon from '../../assets/icons/socialMedia/instagram.png';
+import xLogoIcon from '../../assets/icons/socialMedia/x_logo.png';
+import linkedinIcon from '../../assets/icons/socialMedia/linkedin.png';
+import redditIcon from '../../assets/icons/socialMedia/reddit.png';
 
 const logo = [
-  { name: "instagram", logo: "../public/logos/socialMedia/instagram.png" },
-  { name: "twitter", logo: "../public/logos/socialMedia/x_logo.png" },
-  { name: "linkedin", logo: "../public/logos/socialMedia/linkedin.png" },
-  { name: "reddit", logo: "../public/logos/socialMedia/reddit.png" },
+  { name: "instagram", logo: instagramIcon },
+  { name: "twitter", logo: xLogoIcon },
+  { name: "linkedin", logo: linkedinIcon },
+  { name: "reddit", logo:   redditIcon },
 ];
 
 const footerLinks = {

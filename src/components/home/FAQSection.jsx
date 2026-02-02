@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import faqIcon from '../../assets/icons/faq.png';
+import chatIcon from '../../assets/icons/chat.png';
 
 const logo = [
-  { name: "faq", logo: "../public/logos/faq.png" },
-  { name: "chat", logo: "../public/logos/chat.png" },
+  { name: "faq", logo: faqIcon },
+  { name: "chat", logo: chatIcon },
 ];
 
 const faqs = [

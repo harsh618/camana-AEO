@@ -7,7 +7,7 @@ import instagramIcon from '../../assets/icons/socialMedia/instagram.png';
 // @ts-ignore
 import xLogoIcon from '../../assets/icons/socialMedia/x_logo.png';
 // @ts-ignore
-import linkedinIcon from '../../assets/icons/socialMedia/linkedin.png';
+import linkedinIcon from '../../assets/icons/socialMedia/linkedIn.png';
 // @ts-ignore
 import redditIcon from '../../assets/icons/socialMedia/reddit.png';
 

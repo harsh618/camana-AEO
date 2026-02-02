@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+// @ts-ignore
 import faqIcon from '../../assets/icons/faq.png';
+// @ts-ignore
 import chatIcon from '../../assets/icons/chat.png';
 
 const logo = [

@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+// @ts-ignore
 import marketGrowthIcon from '../../assets/icons/market-growth.svg';
 
 const graphData = [

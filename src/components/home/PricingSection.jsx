@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+// @ts-ignore
 import pricingLogo from '../../assets/icons/pricing.png';
 
 const logo = [{ name: "pricing", logo: pricingLogo }];

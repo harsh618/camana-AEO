@@ -1,9 +1,14 @@
+// @ts-ignore
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+// @ts-ignore
 import instagramIcon from '../../assets/icons/socialMedia/instagram.png';
+// @ts-ignore
 import xLogoIcon from '../../assets/icons/socialMedia/x_logo.png';
+// @ts-ignore
 import linkedinIcon from '../../assets/icons/socialMedia/linkedin.png';
+// @ts-ignore
 import redditIcon from '../../assets/icons/socialMedia/reddit.png';
 
 const logo = [

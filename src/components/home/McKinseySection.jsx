@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+// @ts-ignore
 import industryInsightsIcon from '../../assets/icons/industry-insights.svg';
 
 const logo = [

@@ -1,68 +1,59 @@
-import React, { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { CheckCircle2, Star, Sparkles, Mail } from 'lucide-react';
+import React, { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
+const logo = [{ name: "pricing", logo: "../public/logos/pricing.png" }];
 
 const plans = [
   {
-    name: 'Starter',
-    subtitle: 'Serious Startups & Niche Brands',
+    name: "Starter",
+    subtitle: "Serious Startups & Niche Brands",
     price: 99,
-    period: '/month',
     features: [
-      '150 Custom Prompts',
-      '3 Brands + 5 Competitors',
-      'Weekly Visibility Reports',
-      'Basic GEO Intelligence: Track ranking in 1 Country',
-      'Sentiment Analysis (Positive/Neutral/Negative)',
-      '4 Platforms: ChatGPT, Gemini, Perplexity, Claude',
-      'AI Content Generation',
-      'Email Support'
+      "150 Custom Prompts",
+      "3 Brands + 5 Competitors",
+      "Weekly Visibility Reports",
+      "Basic GEO Intelligence: Track ranking in 1 Country",
+      "Sentiment Analysis (Positive/Neutral/Negative)",
+      "4 Platforms: ChatGPT, Gemini, Perplexity, Claude",
+      "AI Content Generation",
+      "Email Support",
     ],
-    cta: 'Start 7 Days Free Trial',
-    popular: false,
-    gradient: 'from-slate-500 to-slate-600'
+    highlighted: false,
   },
   {
-    name: 'Growth',
-    subtitle: 'High-Growth Teams & Scale-ups',
+    name: "Growth",
+    subtitle: "High-Growth Teams & Scale-ups",
     price: 199,
-    period: '/month',
     features: [
-      '600 Custom Prompts',
-      '10 Brands + 15 Competitors',
-      'Weekly Visibility Updates',
-      'Advanced GEO Intelligence: Track ranking in 5 Regions',
-      'Technical AEO: Schema & llms.txt generation',
-      'Citation Gap Analysis: Direct competitor comparison',
-      'Basic AEO Audits: Automated content recommendations',
-      'AI Content Generation',
-      'Priority Support (Email)'
+      "600 Custom Prompts",
+      "10 Brands + 15 Competitors",
+      "Weekly Visibility Updates",
+      "Advanced GEO Intelligence: Track ranking in 5 Regions",
+      "Technical AEO: Schema & llms.txt generation",
+      "Citation Gap Analysis: Direct competitor comparison",
+      "Basic AEO Audits: Automated content recommendations",
+      "AI Content Generation",
+      "Priority Support (Email)",
     ],
-    cta: 'Start 7 Days Free Trial',
-    popular: true,
-    gradient: 'from-red-600 to-red-500'
+    highlighted: true,
   },
   {
-    name: 'Scale',
-    subtitle: 'Agencies & Dominant Brands',
+    name: "Scale",
+    subtitle: "Agencies & Dominant Brands",
     price: 299,
-    period: '/month',
     features: [
-      '1,500 Custom Prompts',
-      'Unlimited Brands + 50 Competitors',
-      'Real-Time Monitoring Capability',
-      'Global GEO Intelligence: Unlimited regional tracking',
-      'Technical AEO: Schema & llms.txt generation',
-      'White-Label Reporting: PDF exports for clients',
-      'AI Content Generation',
-      'Dedicated Account Manager'
+      "1,500 Custom Prompts",
+      "Unlimited Brands + 50 Competitors",
+      "Real-Time Monitoring Capability",
+      "Global GEO Intelligence: Unlimited regional tracking",
+      "Technical AEO: Schema & llms.txt generation",
+      "White-Label Reporting: PDF exports for clients",
+      "AI Content Generation",
+      "Dedicated Account Manager",
     ],
-    cta: 'Start 7 Days Free Trial',
-    popular: false,
-    gradient: 'from-slate-700 to-slate-800'
-  }
+    highlighted: false,
+  },
 ];
 
 export default function PricingSection() {
@@ -73,121 +64,262 @@ export default function PricingSection() {
 
   const getPrice = (basePrice) => {
     if (isAnnual) {
-      return Math.round(basePrice * 0.7); // 30% discount
+      return Math.round(basePrice * 0.7);
     }
     return basePrice;
   };
 
-  return (
-    <section id="pricing" ref={ref} className="py-24 bg-white relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_80%,rgba(253,45,21,0.05),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(0,0,0,0.05),transparent_50%)]" />
+  // Reusable card so mobile carousel & desktop grid share the exact same markup
+  const PricingCard = ({ plan, index }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: 0.4 + index * 0.1 }}
+      className="rounded-[20px] sm:rounded-[30px] p-5 sm:p-6 md:p-8 relative bg-[#0d0d0d] h-full"
+      style={{
+        boxShadow: plan.highlighted
+          ? "inset 0px 4px 7px rgba(237, 237, 237, 0.15), 0 0 40px rgba(253, 45, 21, 0.2), 0 0 80px rgba(253, 45, 21, 0.1)"
+          : "inset 0px 4px 7px rgba(237, 237, 237, 0.15)",
+        border: plan.highlighted
+          ? "1px solid rgba(253, 45, 21, 0.35)"
+          : "1px solid transparent",
+      }}
+    >
+      {/* Plan Header */}
+      <div className="text-center mb-6">
+        <h3 className="text-[18px] sm:text-[20px] font-bold text-[#ededed] mb-1">
+          {plan.name}
+        </h3>
+        <p className="text-[11px] sm:text-[12px] font-medium text-[#ededed] mb-4">
+          {plan.subtitle}
+        </p>
+        <div className="flex items-baseline justify-center">
+          <span className="text-[20px] font-bold text-[#ededed]">
+            ${getPrice(plan.price)}
+          </span>
+          <span className="text-[12px] font-medium text-[#ededed]">
+            /month
+          </span>
+        </div>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
+      {/* Features */}
+      <ul className="space-y-3 mb-6">
+        {plan.features.map((feature, featureIndex) => (
+          <li key={featureIndex} className="flex items-start gap-2">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              className="mt-0.5 flex-shrink-0"
+            >
+              <path
+                d="M2 6L5 9L10 3"
+                stroke={plan.highlighted ? "#EF2B15" : "#888888"}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="text-[12px] font-medium text-[#ededed]">
+              {feature}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {/* CTA */}
+      <button
+        onClick={() => navigate("/signup")}
+        className={`w-full py-3 px-4 rounded-[30px] border text-[15px] sm:text-[16px] font-medium transition-all ${
+          plan.highlighted
+            ? "border-[#ededed] text-[#ededed] hover:bg-[#ededed]/10"
+            : "border-[#ededed] text-[#ededed] hover:bg-[#ededed]/10"
+        }`}
+      >
+        Start 7 Days Free Trial
+      </button>
+    </motion.div>
+  );
+
+  return (
+    <section
+      id="pricing"
+      ref={ref}
+      className="py-16 bg-black relative overflow-hidden"
+    >
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[120px]">
+        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="flex justify-center mb-6"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 text-red-600 text-sm font-medium mb-6">
-            <Sparkles className="w-4 h-4" />
-            Pricing
-          </span>
-          <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
-            Plans That Scale With{' '}
-            <span className="bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
-              Your Ambition
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-[30px] border border-[#ef2b15] bg-[#fd2d15]/10">
+            <motion.img
+              src={logo[0].logo}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="h-[10px] sm:h-[15px] lg:h-[20px] object-contain"
+            />
+            <span className="text-[14px] sm:text-[16px] lg:text-[18px] font-semibold text-[#ef2b15]/80">
+              Pricing
             </span>
-          </h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Choose the perfect plan to dominate AI search results and grow your brand visibility.
-          </p>
-
-          {/* Monthly/Annual Toggle */}
-          <div className="flex items-center justify-center gap-4 mt-8">
-            <span className={`text-sm font-medium ${!isAnnual ? 'text-slate-900' : 'text-slate-500'}`}>
-              Monthly
-            </span>
-            <button
-              onClick={() => setIsAnnual(!isAnnual)}
-              className={`relative w-14 h-7 rounded-full transition-colors ${isAnnual ? 'bg-green-500' : 'bg-slate-300'}`}
-            >
-              <div className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${isAnnual ? 'translate-x-7' : 'translate-x-0'}`} />
-            </button>
-            <span className={`text-sm font-medium ${isAnnual ? 'text-slate-900' : 'text-slate-500'}`}>
-              Annual
-            </span>
-            {isAnnual && (
-              <span className="text-sm font-semibold text-green-600 bg-green-50 px-3 py-1 rounded-full">
-                Save 30%
-              </span>
-            )}
           </div>
         </motion.div>
 
-        {/* Pricing Cards */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-12">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className={`relative ${plan.popular ? 'lg:-mt-4 lg:mb-4' : ''}`}
-            >
-              {/* Popular Badge */}
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                  <div className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-red-600 to-red-500 text-white text-sm font-medium shadow-lg">
-                    <Star className="w-4 h-4 fill-current" />
-                    Most Popular
-                  </div>
-                </div>
-              )}
+        {/* Headline */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.1 }}
+          className="text-center mb-4"
+        >
+          <h2 className="text-[28px] sm:text-[40px] md:text-[48px] lg:text-[64px] font-bold leading-tight">
+            <span className="text-white">Plans That Scale With</span>
+            <br className="hidden sm:block" />
+            <span className="text-[#ef2b15]"> Your Ambition</span>
+          </h2>
+        </motion.div>
 
-              <div className={`h-full rounded-3xl p-8 transition-all duration-300 ${plan.popular
-                ? 'bg-gradient-to-b from-red-50 to-orange-50 border-2 border-red-200 shadow-xl shadow-red-500/10'
-                : 'bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg'
-                }`}>
-                {/* Plan Header */}
-                <div className="text-center mb-8">
-                  <h3 className="text-xl font-bold text-slate-900 mb-1">{plan.name}</h3>
-                  <p className="text-sm text-slate-500 mb-4">{plan.subtitle}</p>
-                  <div className="flex items-baseline justify-center gap-1 mb-3">
-                    <span className={`text-5xl font-bold bg-gradient-to-r ${plan.popular ? 'from-red-600 to-red-500' : 'from-slate-900 to-slate-700'} bg-clip-text text-transparent`}>
-                      ${getPrice(plan.price)}
-                    </span>
-                    <span className="text-slate-500">{plan.period}</span>
-                  </div>
-                </div>
+        {/* Subheadline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.2 }}
+          className="text-[14px] sm:text-[16px] lg:text-[18px] font-medium text-[#ededed]/90 text-center max-w-[621px] mx-auto mb-6 sm:mb-8 px-2 sm:px-0 leading-[1.5]"
+        >
+          Choose the perfect plan to dominate AI search results and grow your
+          brand visibility
+        </motion.p>
 
-                {/* Features */}
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-3">
-                      <CheckCircle2 className={`w-5 h-5 mt-0.5 flex-shrink-0 ${plan.popular ? 'text-red-600' : 'text-green-600'
-                        }`} />
-                      <span className="text-slate-700 text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+        {/* Monthly/Annual Toggle */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.3 }}
+          className="flex items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12"
+        >
+          <span
+            className={`text-[16px] sm:text-[18px] lg:text-[20px] font-bold ${!isAnnual ? "text-white" : "text-[#a6a6a6]"}`}
+          >
+            Monthly
+          </span>
+          <button
+            onClick={() => setIsAnnual(!isAnnual)}
+            className="relative w-[44px] h-[19px] rounded-full bg-[#ededed]/20 transition-colors"
+          >
+            <div
+              className={`absolute top-[2px] left-[2px] w-[15px] h-[15px] bg-[#ededed] rounded-full shadow-md transition-transform ${isAnnual ? "translate-x-[25px]" : "translate-x-0"}`}
+            />
+          </button>
+          <span
+            className={`text-[16px] sm:text-[18px] lg:text-[20px] font-semibold ${isAnnual ? "text-white" : "text-[#a6a6a6]"}`}
+          >
+            Annual
+          </span>
+        </motion.div>
 
-                {/* CTA */}
-                <Button
-                  onClick={() => navigate('/waitlist')}
-                  className={`w-full py-6 text-lg rounded-xl transition-all duration-300 ${plan.popular
-                    ? 'bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-orange-500 text-white shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30'
-                    : 'bg-slate-900 hover:bg-slate-800 text-white'
-                    }`}
-                >
-                  {plan.cta}
-                </Button>
+        {/* ============================================================
+            MOBILE ONLY (below sm): Horizontal swipe carousel.
+            - User swipes/scrolls left↔right manually, no auto-scroll.
+            - snap-x + snap-start gives smooth card-by-card snapping.
+            - scroll-pl-4 scroll-pr-4 adds scroll-padding so snap
+              points are inset 16px from both edges — this CENTERS
+              the active card with equal space on left and right.
+            - Card width = calc(100% - 32px) so 16px peeks on each
+              side when centered (matching the scroll-padding).
+            - -mx-4 + px-4 lets cards bleed edge-to-edge while
+              keeping text aligned with the rest of the page.
+            - scrollbarWidth: none hides the scrollbar visually.
+            ============================================================ */}
+        <div className="sm:hidden mb-8 -mx-4">
+          <div
+            className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 scroll-pl-4 scroll-pr-4"
+            style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
+          >
+            {plans.map((plan, index) => (
+              <div
+                key={index}
+                className="snap-start snap-always flex-shrink-0"
+                style={{ width: "calc(100% - 32px)" }}
+              >
+                <PricingCard plan={plan} index={index} />
               </div>
-            </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* ============================================================
+            COMMENTED OUT — Previous mobile vertical stacking layout.
+            Cards used to stack in a single column on mobile via the
+            base grid (no cols class at < sm). This has been replaced
+            by the horizontal swipe carousel above for mobile.
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
+              {plans.map((plan, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: 0.4 + index * 0.1 }}
+                  className={`rounded-[20px] sm:rounded-[30px] p-5 sm:p-6 md:p-8 relative ${
+                    plan.highlighted ? "bg-[#0d0d0d]" : "bg-[#0d0d0d]"
+                  }`}
+                  style={{
+                    boxShadow: plan.highlighted
+                      ? "inset 0px 4px 7px rgba(237, 237, 237, 0.15), 0 0 40px rgba(253, 45, 21, 0.2), 0 0 80px rgba(253, 45, 21, 0.1)"
+                      : "inset 0px 4px 7px rgba(237, 237, 237, 0.15)",
+                    border: plan.highlighted
+                      ? "1px solid rgba(253, 45, 21, 0.35)"
+                      : "1px solid transparent",
+                  }}
+                >
+                  <div className="text-center mb-6">
+                    <h3 className="text-[18px] sm:text-[20px] font-bold text-[#ededed] mb-1">
+                      {plan.name}
+                    </h3>
+                    <p className="text-[11px] sm:text-[12px] font-medium text-[#ededed] mb-4">
+                      {plan.subtitle}
+                    </p>
+                    <div className="flex items-baseline justify-center">
+                      <span className="text-[20px] font-bold text-[#ededed]">
+                        ${getPrice(plan.price)}
+                      </span>
+                      <span className="text-[12px] font-medium text-[#ededed]">
+                        /month
+                      </span>
+                    </div>
+                  </div>
+                  <ul className="space-y-3 mb-6">
+                    {plan.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-start gap-2">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="mt-0.5 flex-shrink-0">
+                          <path d="M2 6L5 9L10 3" stroke={plan.highlighted ? "#EF2B15" : "#888888"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="text-[12px] font-medium text-[#ededed]">
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    onClick={() => navigate("/signup")}
+                    className={`w-full py-3 px-4 rounded-[30px] border text-[15px] sm:text-[16px] font-medium transition-all border-[#ededed] text-[#ededed] hover:bg-[#ededed]/10`}
+                  >
+                    Start 7 Days Free Trial
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+            ============================================================ */}
+
+        {/* TABLET + DESKTOP (sm and above): Normal grid — unchanged */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {plans.map((plan, index) => (
+            <PricingCard key={index} plan={plan} index={index} />
           ))}
         </div>
 
@@ -195,44 +327,50 @@ export default function PricingSection() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-slate-900 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
+          transition={{ delay: 0.7 }}
+          className="rounded-[20px] sm:rounded-[30px] border border-[#ededed]/15 bg-[#b0b0b0]/5 p-6 sm:p-8 md:p-10 flex flex-col sm:flex-row items-center justify-between gap-6"
         >
-          <div className="flex-1">
-            <h3 className="text-2xl font-bold text-white mb-3">Enterprise & Custom Solutions</h3>
-            <p className="text-slate-300 text-lg leading-relaxed">
-              Need unlimited prompts, API access, custom integrations, or dedicated support? Let's build a plan tailored to your organization's needs.
+          <div className="flex-1 text-center sm:text-left">
+            <h3 className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold text-[#ededed] mb-2">
+              Enterprise & Custom Solutions
+            </h3>
+            <p className="text-[13px] sm:text-[14px] font-normal text-[#ededed] max-w-[667px] mx-auto sm:mx-0">
+              Need unlimited prompts, API access, custom integrations, or
+              dedicated support? Let's build a plan tailored to your
+              organization's needs.
             </p>
           </div>
-          <Button
-            onClick={() => window.location.href = 'mailto:sales@camanahomes.com?subject=Enterprise Inquiry'}
-            className="bg-white hover:bg-slate-100 text-slate-900 px-8 py-6 text-lg rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center gap-2 whitespace-nowrap"
+          <button
+            onClick={() =>
+              (window.location.href =
+                "mailto:sales@searchlyst.com?subject=Enterprise Inquiry")
+            }
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-[30px] border border-[#939393] text-[15px] sm:text-[16px] font-medium text-[#ededed] hover:bg-[#ededed]/5 transition-all whitespace-nowrap"
           >
-            <Mail className="w-5 h-5" />
+            <svg width="15" height="12" viewBox="0 0 15 12" fill="none">
+              <rect
+                x="0.5"
+                y="0.5"
+                width="14"
+                height="11"
+                rx="1.5"
+                stroke="#ededed"
+              />
+              <path
+                d="M1 1L7.5 7L14 1"
+                stroke="#ededed"
+                strokeWidth="1"
+                strokeLinecap="round"
+              />
+            </svg>
             Contact Us
-          </Button>
+          </button>
         </motion.div>
+      </div>
 
-        {/* Trust Badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="flex flex-wrap justify-center gap-6 text-sm text-slate-500 mt-12"
-        >
-          <span className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-green-500" />
-            No credit card required for trial
-          </span>
-          <span className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-green-500" />
-            Cancel anytime, no questions asked
-          </span>
-          <span className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-green-500" />
-            7-day money-back guarantee
-          </span>
-        </motion.div>
+      {/* Divider line */}
+      <div className="mt-16 mb-0 flex justify-center">
+        <div className="w-[90%] sm:w-[681px] max-w-[681px] h-[2px] bg-[#2b2b2b] blur-[4px]" />
       </div>
     </section>
   );

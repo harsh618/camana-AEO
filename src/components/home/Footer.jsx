@@ -1,14 +1,20 @@
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Twitter, Linkedin, Youtube, Mail, ArrowRight, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const logo = [
+  { name: "instagram", logo: "../public/logos/socialMedia/instagram.png" },
+  { name: "twitter", logo: "../public/logos/socialMedia/x_logo.png" },
+  { name: "linkedin", logo: "../public/logos/socialMedia/linkedin.png" },
+  { name: "reddit", logo: "../public/logos/socialMedia/reddit.png" },
+];
 
 const footerLinks = {
   product: [
     { label: 'Features', href: '#features' },
     { label: 'Pricing', href: '#pricing' },
     { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Case Studies', href: '#testimonials' },
+    { label: 'Case Studies', href: '#' },
     { label: 'API Documentation', href: '#' }
   ],
   resources: [
@@ -26,21 +32,12 @@ const footerLinks = {
   ]
 };
 
-const socialLinks = [
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Youtube, href: '#', label: 'YouTube' }
-];
-
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-slate-100 relative overflow-hidden">
-      {/* Subtle Background Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(253,45,21,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(253,45,21,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <footer className="bg-[#020202]/40 border-t border-[#23293c]">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[175px]">
         {/* Main Footer Content */}
-        <div className="py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12">
+        <div className="py-10 sm:py-12 md:py-14 lg:py-16 flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 xl:gap-[201px]">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
             <div className="flex items-center gap-2 mb-6">
@@ -48,102 +45,177 @@ export default function Footer() {
               <img src="/brand-full-logo.png" alt="AI Discovery" className="w-32 h-8 object-contain" />
               {/* <span className="text-xl font-bold text-slate-900">Searchlyst</span> */}
             </div>
-            <p className="text-slate-500 text-sm leading-relaxed mb-6">
+            <p className="text-[13px] sm:text-[14px] font-medium text-[#ededed] max-w-full sm:max-w-[250px] lg:max-w-[194px] mb-4 sm:mb-5 leading-relaxed">
               Making brands visible in the age of AI search. Track, optimize, and dominate AI search results.
             </p>
+            
+            {/* Newsletter Input */}
+            <div className="relative">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full sm:w-auto max-w-full sm:max-w-[240px] lg:max-w-[171px] px-3 sm:px-4 py-2 sm:py-2.5 bg-transparent border border-[#ededed]/30 rounded-lg text-[13px] sm:text-[14px] font-medium text-[#ededed] placeholder:text-[#ededed]/70 outline-none focus:border-[#ef2b15]/50 transition-colors"
+              />
+            </div>
+          </div>
 
-            {/* Newsletter */}
-            <div className="space-y-3">
-              <p className="text-sm font-medium text-slate-900">Subscribe to our newsletter</p>
-              <div className="flex gap-2">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-lg"
-                />
-                <Button size="icon" className="bg-red-600 hover:bg-red-500 rounded-lg">
-                  <ArrowRight className="w-4 h-4 text-white" />
-                </Button>
+          {/* Links Section */}
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 md:gap-12 lg:gap-16 xl:gap-[78px]">
+            {/* Product */}
+            <div className="min-w-0">
+              <h4 className="text-[15px] sm:text-[16px] font-semibold text-white mb-4 sm:mb-5 md:mb-6">
+                Product
+              </h4>
+              <ul className="space-y-3 sm:space-y-[18px]">
+                {footerLinks.product.map((link, index) => (
+                  <li key={index}>
+                    <a 
+                      href={link.href} 
+                      className="text-[13px] sm:text-[14px] font-normal text-[#ededed] hover:text-[#ef2b15] transition-colors block"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Resources */}
+            <div className="min-w-0">
+              <h4 className="text-[15px] sm:text-[16px] font-semibold text-white mb-4 sm:mb-5 md:mb-6">
+                Resources
+              </h4>
+              <ul className="space-y-3 sm:space-y-[18px]">
+                {footerLinks.resources.map((link, index) => (
+                  <li key={index}>
+                    <a 
+                      href={link.href} 
+                      className="text-[13px] sm:text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors block"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div className="min-w-0">
+              <h4 className="text-[15px] sm:text-[16px] font-semibold text-white mb-4 sm:mb-5 md:mb-6">
+                Company
+              </h4>
+              <ul className="space-y-3 sm:space-y-[18px]">
+                {footerLinks.company.map((link, index) => (
+                  <li key={index}>
+                    {link.href.startsWith('/') ? (
+                      <Link 
+                        to={link.href} 
+                        className="text-[13px] sm:text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors block"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a 
+                        href={link.href} 
+                        className="text-[13px] sm:text-[14px] font-medium text-[#ededed] hover:text-[#ef2b15] transition-colors block"
+                      >
+                        {link.label}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Connect */}
+            <div className="min-w-0">
+              <h4 className="text-[15px] sm:text-[16px] font-semibold text-white mb-4 sm:mb-5 md:mb-6">
+                Connect
+              </h4>
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-[5px] flex-wrap">
+                {/* Instagram */}
+                <a 
+                  href="#" 
+                  className="w-6 h-6 sm:w-10 sm:h-10 md:w-5 md:h-5 flex items-center justify-center hover:opacity-80 transition-opacity"
+                  aria-label="Instagram"
+                >
+                  <motion.img
+                    src={logo[0].logo}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="w-full h-full object-contain"
+                    alt="Instagram"
+                  />
+                </a>
+                
+                {/* X (Twitter) */}
+                <a 
+                  href="#" 
+                  className="w-6 h-6 sm:w-10 sm:h-10 md:w-5 md:h-5 flex items-center justify-center hover:opacity-80 transition-opacity"
+                  aria-label="X (Twitter)"
+                >
+                  <motion.img
+                    src={logo[1].logo}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="w-full h-full object-contain"
+                    alt="X (Twitter)"
+                  />
+                </a>
+                
+                {/* LinkedIn */}
+                <a 
+                  href="#" 
+                  className="w-9 h-9 sm:w-10 sm:h-10 md:w-7 md:h-7 flex items-center justify-center hover:opacity-80 transition-opacity"
+                  aria-label="LinkedIn"
+                >
+                  <motion.img
+                    src={logo[2].logo}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="w-full h-full object-contain"
+                    alt="LinkedIn"
+                  />
+                </a>
+                
+                {/* Reddit */}
+                <a 
+                  href="#" 
+                  className="w-6 h-6 sm:w-10 sm:h-10 md:w-5 md:h-5 flex items-center justify-center hover:opacity-80 transition-opacity"
+                  aria-label="Reddit"
+                >
+                  <motion.img
+                    src={logo[3].logo}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="w-full h-full object-contain"
+                    alt="Reddit"
+                  />
+                </a>
               </div>
             </div>
-          </div>
-
-          {/* Product Links */}
-          <div>
-            <h4 className="font-semibold text-slate-900 mb-4">Product</h4>
-            <ul className="space-y-3">
-              {footerLinks.product.map((link, index) => (
-                <li key={index}>
-                  <a href={link.href} className="text-slate-500 hover:text-red-600 text-sm transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources Links */}
-          <div>
-            <h4 className="font-semibold text-slate-900 mb-4">Resources</h4>
-            <ul className="space-y-3">
-              {footerLinks.resources.map((link, index) => (
-                <li key={index}>
-                  <a href={link.href} className="text-slate-500 hover:text-red-600 text-sm transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Links */}
-          <div>
-            <h4 className="font-semibold text-slate-900 mb-4">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link, index) => (
-                <li key={index}>
-                  <a href={link.href} className="text-slate-500 hover:text-red-600 text-sm transition-colors">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Connect */}
-          <div>
-            <h4 className="font-semibold text-slate-900 mb-4">Connect</h4>
-            <div className="flex gap-3 mb-6">
-              {socialLinks.map((social, index) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={index}
-                    href={social.href}
-                    aria-label={social.label}
-                    className="w-10 h-10 rounded-lg bg-slate-100 hover:bg-red-50 flex items-center justify-center transition-colors"
-                  >
-                    <Icon className="w-5 h-5 text-slate-600" />
-                  </a>
-                );
-              })}
-            </div>
-            <a href="mailto:hello@aidiscovery.com" className="flex items-center gap-2 text-slate-500 hover:text-red-600 text-sm transition-colors">
-              <Mail className="w-4 h-4" />
-              hello@aidiscovery.com
-            </a>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="py-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-sm">
+        <div className="py-4 sm:py-5 md:py-6 border-t border-[#23293c]/50 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+          <p className="text-[12px] sm:text-[13px] md:text-[14px] font-medium text-[#ededed] text-center sm:text-left">
             © 2026 Searchlyst. Making brands visible in the age of AI search. v2.1
           </p>
-          <div className="flex items-center gap-6 text-sm">
-            <a href="#" className="text-slate-500 hover:text-red-600 transition-colors">Privacy</a>
-            <a href="#" className="text-slate-500 hover:text-red-600 transition-colors">Terms</a>
-            <a href="#" className="text-slate-500 hover:text-red-600 transition-colors">Cookies</a>
+          <div className="flex items-center gap-4 sm:gap-6 md:gap-8 text-[12px] sm:text-[13px] md:text-[14px] font-medium">
+            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">
+              Privacy
+            </a>
+            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">
+              Terms
+            </a>
+            <a href="#" className="text-[#ededed] hover:text-[#ef2b15] transition-colors">
+              Cookies
+            </a>
           </div>
         </div>
       </div>

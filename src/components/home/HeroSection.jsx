@@ -1,284 +1,383 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Sparkles, Building2, Plane, Heart } from 'lucide-react';
-import { ChatGPTLogo, GeminiLogo, PerplexityLogo, ClaudeLogo } from "@/components/icons/AILogos";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-const industries = [
-  {
-    id: 'real-estate',
-    icon: Building2,
-    label: 'Real Estate',
-    color: 'from-orange-500 to-red-600',
-    query: 'luxury waterfront homes in Dubai under $5M',
-    platform: 'ChatGPT',
-    Logo: ChatGPTLogo,
-    response: {
-      brand: 'LuxuryEstates Dubai',
-      content: 'Featured listings include the Marina Pearl Residence ($4.2M), Palm Jumeirah Villa ($4.8M), and Creek Harbor Penthouse ($3.9M). All properties verified by LuxuryEstates Dubai.',
-      link: 'luxuryestates.ae/waterfront'
-    }
-  },
-  {
-    id: 'travel',
-    icon: Plane,
-    label: 'Travel',
-    color: 'from-red-500 to-rose-600',
-    query: 'perfect 7-day Japan itinerary for first-time visitors',
-    platform: 'Perplexity',
-    Logo: PerplexityLogo,
-    response: {
-      brand: 'WanderWise Travel',
-      content: 'Day 1-3: Tokyo (Shibuya, Senso-ji, Tsukiji). Day 4-5: Kyoto (Fushimi Inari, Arashiyama). Day 6-7: Osaka & Day Trip. Curated by WanderWise Travel experts.',
-      link: 'wanderwise.com/japan-guide'
-    }
-  },
-  {
-    id: 'healthcare',
-    icon: Heart,
-    label: 'Healthcare',
-    color: 'from-rose-500 to-pink-600',
-    query: 'what are early signs of vitamin D deficiency?',
-    platform: 'Claude',
-    Logo: ClaudeLogo,
-    response: {
-      brand: 'HealthFirst Clinic',
-      content: 'Key symptoms: fatigue, bone pain, muscle weakness, mood changes, hair loss. According to HealthFirst Clinic, 42% of adults are deficient.',
-      link: 'healthfirst.com/vitamin-d'
-    }
-  }
+const brands = [
+  { name: "ChatGPT", logo: "/logos/chatgpt-icon.png" },
+  { name: "Claude", logo: "/logos/claude-icon.png" },
+  { name: "Perplexity", logo: "/logos/perplexity-text.png" },
+  { name: "Gemini", logo: "/logos/gemini-icon.png" },
 ];
 
-const IndustryCard = ({ industry, isActive }) => {
-  const Icon = industry.icon;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: isActive ? 1 : 0.5, y: 0, scale: isActive ? 1 : 0.95 }}
-      className={`relative bg-white backdrop-blur-xl rounded-2xl border border-slate-200 overflow-hidden transition-all duration-500 shadow-xl ${isActive ? 'ring-2 ring-red-500/50' : ''}`}
-    >
-      {/* Header */}
-      <div className="px-4 py-3 border-b border-slate-100 flex items-center gap-2 bg-slate-50">
-        <div className={`p-1.5 rounded-lg bg-gradient-to-br ${industry.color}`}>
-          <Icon className="w-3.5 h-3.5 text-white" />
-        </div>
-        <span className="text-xs font-medium text-slate-700">{industry.label}</span>
-        <div className="ml-auto px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 flex items-center gap-1.5">
-          <industry.Logo className="w-3 h-3" />
-          <span className="text-[10px] font-medium text-slate-600">{industry.platform}</span>
-        </div>
-      </div>
-
-      {/* Query */}
-      <div className="p-4 border-b border-slate-100">
-        <div className="flex items-start gap-2">
-          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center flex-shrink-0">
-            <span className="text-[10px] text-white font-medium">U</span>
-          </div>
-          <div className="flex-1">
-            <p className="text-sm text-slate-700 leading-relaxed">"{industry.query}"</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Response */}
-      <div className="p-4 bg-gradient-to-b from-white to-red-50/50">
-        <div className="flex items-start gap-2">
-          <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${industry.color} flex items-center justify-center flex-shrink-0`}>
-            <Sparkles className="w-3 h-3 text-white" />
-          </div>
-          <div className="flex-1 space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-slate-900">{industry.response.brand}</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-medium">Cited</span>
-            </div>
-            <p className="text-xs text-slate-600 leading-relaxed">{industry.response.content}</p>
-            <div className="flex items-center gap-1.5 text-red-600 text-[10px]">
-              <span className="underline">{industry.response.link}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+const BRAND_INTERVAL = 1500; // 3 seconds per direction
 
 export default function HeroSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [currentBrand, setCurrentBrand] = useState(0);
+  const [direction, setDirection] = useState("right"); // 'right' or 'left'
+  const [isAnimating, setIsAnimating] = useState(true);
+  const [websiteUrl, setWebsiteUrl] = useState("");
+  const [email, setEmail] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % industries.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+    // Reset animation
+    setIsAnimating(false);
+    const resetTimeout = setTimeout(() => setIsAnimating(true), 50);
+
+    const brandInterval = setInterval(() => {
+      // Change logo and flip direction when animation ends
+      setCurrentBrand((prev) => (prev + 1) % brands.length);
+      setDirection((prev) => (prev === "right" ? "left" : "right"));
+    }, BRAND_INTERVAL);
+
+    return () => {
+      clearInterval(brandInterval);
+      clearTimeout(resetTimeout);
+    };
+  }, [currentBrand]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/signup", { state: { websiteUrl, email } });
+  };
+
+  // Calculate positions based on direction
+  const getProgressWidth = () => {
+    if (!isAnimating) return direction === "right" ? "0%" : "100%";
+    return direction === "right" ? "100%" : "0%";
+  };
+
+  const getDotPosition = () => {
+    if (!isAnimating)
+      return direction === "right" ? "-7px" : "calc(100% - 7px)";
+    return direction === "right" ? "calc(100% - 7px)" : "-7px";
+  };
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-b from-white via-slate-50 to-red-50 overflow-hidden">
-      {/* Animated Background */}
+    <section className="relative min-h-fit bg-black overflow-hidden pt-[76px]">
+      {/* Background gradient effects */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-red-500/5 to-orange-500/5 rounded-full blur-3xl" />
-
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(239,68,68,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(239,68,68,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#ef2b15]/10 via-transparent to-transparent" />
+        <div className="absolute top-1/4 right-0 w-[300px] sm:w-[400px] lg:w-[600px] h-[300px] sm:h-[400px] lg:h-[600px] bg-[#ef2b15]/5 rounded-full blur-[100px] lg:blur-[150px]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left Content */}
+      <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-20 pt-4 sm:pt-6 lg:pt-8 pb-8 sm:pb-12">
+        <div className="flex flex-col items-center text-center">
+          {/* Badge - Updated with glowing red dot */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#ef2b15] bg-[#fd2d15]/10 mb-4 sm:mb-5 lg:mb-6"
           >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 border border-red-100"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              <span className="text-sm text-slate-700">AI Search Optimization Platform</span>
-            </motion.div>
-
-            {/* Headline */}
-            <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
-                Get Your Brand Discovered Where{' '}
-                <span className="bg-gradient-to-r from-red-600 via-orange-600 to-rose-600 bg-clip-text text-transparent">
-                  1.5 Billion+
-                </span>{' '}
-                People Search with AI
-              </h1>
-              <p className="text-lg sm:text-xl text-slate-600 max-w-xl leading-relaxed">
-                The first platform built to make your brand visible in ChatGPT, Perplexity, Claude, and Gemini. Track, optimize, and dominate AI search results.
-              </p>
-            </div>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-4">
-              <Button
-                size="lg"
-                onClick={() => navigate('/signup')}
-                className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-red-500/25 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/30 hover:-translate-y-0.5"
-              >
-                Start Free 7-Day Trial
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-              <button
-                onClick={() => document.getElementById('how-it-works').scrollIntoView({ behavior: 'smooth' })}
-                className="inline-flex items-center border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 px-8 py-4 text-lg rounded-xl transition-all duration-300 shadow-sm font-medium"
-              >
-                <Play className="mr-2 w-5 h-5" />
-                See How It Works
-              </button>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="flex items-center gap-8 pt-4">
-              <div className="flex -space-x-3">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-red-400 to-orange-500 border-2 border-white flex items-center justify-center shadow-md">
-                    <span className="text-xs font-medium text-white">{String.fromCharCode(64 + i)}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="text-slate-600 text-sm">
-                <span className="text-slate-900 font-semibold">2,500+</span> brands already optimizing
-              </div>
-            </div>
+            <span
+              className="w-[7px] h-[7px] sm:w-[9px] sm:h-[9px] rounded-full bg-[#FD2D15]"
+              style={{
+                boxShadow:
+                  "0 0 8px 2px rgba(253, 45, 21, 0.6), 0 0 4px 1px rgba(253, 45, 21, 0.8)",
+                filter: "blur(0.5px)",
+              }}
+            />
+            <span className="text-[13px] sm:text-[15px] lg:text-[18px] font-semibold text-[#ef2b15]/80">
+              AI search optimisation platform
+            </span>
           </motion.div>
 
-          {/* Right - Industry Cards */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-[32px] sm:text-[42px] md:text-[52px] lg:text-[64px] font-bold text-[#ededed] leading-tight tracking-[0.5px] sm:tracking-[1px] lg:tracking-[1.92px] mb-3 sm:mb-4 px-2"
           >
-            {/* Industry Selector */}
-            <div className="flex justify-center gap-2 mb-6">
-              {industries.map((industry, index) => {
-                const Icon = industry.icon;
-                return (
-                  <button
-                    key={industry.id}
-                    onClick={() => setActiveIndex(index)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ${activeIndex === index
-                      ? 'bg-red-100 text-red-700'
-                      : 'bg-white text-slate-500 hover:text-slate-700 border border-slate-200'
-                      }`}
+            Get your brand <br className="hidden sm:block" />
+            recommended by
+          </motion.h1>
+
+          {/* Brand Logo Carousel - Made bigger */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="h-[60px] sm:h-[80px] lg:h-[100px] mb-4 sm:mb-5 lg:mb-6 flex items-center justify-center"
+          >
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentBrand}
+                src={brands[currentBrand].logo}
+                alt={brands[currentBrand].name}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="h-[50px] sm:h-[70px] lg:h-[100px] object-contain"
+              />
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Animated Progress Bar - Static glowing line with moving pointer */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="relative w-[200px] sm:w-[260px] lg:w-[320px] h-[4px] sm:h-[5px] lg:h-[6px] rounded-full mb-6 sm:mb-7 lg:mb-8"
+          >
+            {/* Static glowing line - always visible */}
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(90deg, rgba(253, 45, 21, 0.8) 0%, rgba(253, 45, 21, 0.5) 50%, rgba(253, 45, 21, 0.8) 100%)",
+                boxShadow:
+                  "0 0 10px 2px rgba(253, 45, 21, 0.4), 0 0 20px 4px rgba(253, 45, 21, 0.2)",
+              }}
+            />
+            {/* Moving glowing dot/pointer */}
+            <div
+              className="absolute top-1/2 -translate-y-1/2 w-[10px] h-[10px] sm:w-[12px] sm:h-[12px] lg:w-[14px] lg:h-[14px] rounded-full z-10"
+              style={{
+                left: getDotPosition(),
+                background:
+                  "radial-gradient(circle, #FF5544 0%, #FD2D15 50%, #D92010 100%)",
+                boxShadow:
+                  "0 0 12px 4px rgba(253, 45, 21, 0.8), 0 0 24px 8px rgba(253, 45, 21, 0.4)",
+                transition: isAnimating
+                  ? `left ${BRAND_INTERVAL}ms linear`
+                  : "none",
+              }}
+            />
+          </motion.div>
+
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-[14px] sm:text-[16px] lg:text-[18px] font-medium text-[#ededed]/90 max-w-[400px] sm:max-w-[500px] lg:max-w-[581px] mb-6 sm:mb-8 lg:mb-10 px-2"
+          >
+            The all-in-one platform to track, optimize, and control your brand's
+            presence in the age of AI search.
+          </motion.p>
+
+          {/* Form Card - Wrapped in bordered container */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="w-full max-w-[800px] p-4 sm:p-6 lg:p-8 rounded-[16px] sm:rounded-[20px] lg:rounded-[24px] border border-[#ededed]/15 bg-[#0a0a0a]/80 backdrop-blur-md"
+          >
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-[14px] sm:gap-[18px] lg:gap-[20px]"
+            >
+              {/* Input Row */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                {/* Website URL Input */}
+                <div className="flex-1 flex items-center gap-2.5 sm:gap-3 px-4 sm:px-5 py-3 sm:py-3.5 rounded-full border border-[#ededed]/15 bg-[#1a1a1a]">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 22 22"
+                    fill="none"
+                    className="flex-shrink-0 sm:w-5 sm:h-5"
                   >
-                    <Icon className="w-4 h-4" />
-                    <span className="text-sm font-medium hidden sm:inline">{industry.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Cards Grid */}
-            <div className="grid grid-cols-1 gap-4">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <IndustryCard industry={industries[activeIndex]} isActive={true} />
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Preview of other cards */}
-            <div className="grid grid-cols-2 gap-4 mt-4 opacity-60">
-              {industries.filter((_, i) => i !== activeIndex).map((industry) => (
-                <div
-                  key={industry.id}
-                  onClick={() => setActiveIndex(industries.indexOf(industry))}
-                  className="bg-white backdrop-blur-xl rounded-xl border border-slate-200 p-3 cursor-pointer hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm"
-                >
-                  <div className="flex items-center gap-2">
-                    <industry.icon className="w-4 h-4 text-slate-500" />
-                    <span className="text-xs text-slate-600">{industry.label}</span>
-                  </div>
+                    <circle
+                      cx="11"
+                      cy="11"
+                      r="9.5"
+                      stroke="#8a8a8aff"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M11 1.5C11 1.5 15 6 15 11C15 16 11 20.5 11 20.5"
+                      stroke="#8a8a8aff"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M11 1.5C11 1.5 7 6 7 11C7 16 11 20.5 11 20.5"
+                      stroke="#8a8a8aff"
+                      strokeWidth="1.5"
+                    />
+                    <path d="M2 11H20" stroke="#8a8a8aff" strokeWidth="1.5" />
+                  </svg>
+                  <input
+                    type="url"
+                    placeholder="Enter Your Website URL"
+                    value={websiteUrl}
+                    onChange={(e) => setWebsiteUrl(e.target.value)}
+                    className="flex-1 bg-transparent text-[13px] sm:text-[14px] lg:text-[15px] font-medium text-[#ededed] placeholder:text-[#ededed]/50 outline-none min-w-0"
+                  />
                 </div>
-              ))}
+
+                {/* Email Input */}
+                <div className="flex-1 flex items-center gap-2.5 sm:gap-3 px-4 sm:px-5 py-3 sm:py-3.5 rounded-full border border-[#ededed]/15 bg-[#1a1a1a]">
+                  <svg
+                    width="16"
+                    height="13"
+                    viewBox="0 0 20 16"
+                    fill="none"
+                    className="flex-shrink-0 sm:w-[18px] sm:h-[14px]"
+                  >
+                    <rect
+                      x="0.75"
+                      y="0.75"
+                      width="18.5"
+                      height="14.5"
+                      rx="2.25"
+                      stroke="#8a8a8aff"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M1.5 2L10 9L18.5 2"
+                      stroke="#8a8a8aff"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <input
+                    type="email"
+                    placeholder="Your Work Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 bg-transparent text-[13px] sm:text-[14px] lg:text-[15px] font-medium text-[#ededed] placeholder:text-[#ededed]/50 outline-none min-w-0"
+                  />
+                </div>
+              </div>
+
+              {/* CTA Button - Default: matches reference style | Hover: grey */}
+              <button
+                type="submit"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="w-full px-6 sm:px-8 py-3.5 sm:py-4 rounded-[30px] flex items-center justify-center gap-2 sm:gap-3 transition-all duration-300 cursor-pointer"
+                style={{
+                  background: isHovered
+                    ? "rgba(80, 80, 80, 0.75)"
+                    : "rgba(253, 45, 21, 0.05)",
+                  border: isHovered
+                    ? "1px solid rgba(255, 255, 255, 0.08)"
+                    : "1px solid rgba(253, 45, 21, 0.15)",
+                  boxShadow: isHovered
+                    ? "none"
+                    : "inset 0px 4px 8px rgba(237, 237, 237, 0.32)",
+                }}
+              >
+                <span
+                  className="text-[15px] sm:text-[18px] lg:text-[22px] font-bold transition-colors duration-300"
+                  style={{
+                    color: isHovered ? "#b0b0b0" : "rgba(253, 45, 21, 0.7)",
+                  }}
+                >
+                  Get Your Free AI Visibility Score
+                </span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="transition-all duration-300 sm:w-[18px] sm:h-[18px] lg:w-[20px] lg:h-[20px]"
+                  style={{
+                    transform: isHovered ? "translateX(4px)" : "translateX(0)",
+                  }}
+                >
+                  <path
+                    d="M5 12H19M19 12L12 5M19 12L12 19"
+                    stroke={isHovered ? "#b0b0b0" : "rgba(253, 45, 21, 0.7)"}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </form>
+
+            {/* Trust Indicators - No border, more spacing */}
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-10 mt-5 sm:mt-6 lg:mt-8">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  className="sm:w-[18px] sm:h-[18px]"
+                >
+                  <circle
+                    cx="10"
+                    cy="10"
+                    r="8.5"
+                    stroke="#FD2D15"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M10 5V10L13 13"
+                    stroke="#FD2D15"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span className="text-[12px] sm:text-[13px] lg:text-[14px] font-normal text-[#ededed]/70">
+                  Setup in 5 minutes
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  className="sm:w-[18px] sm:h-[18px]"
+                >
+                  <circle
+                    cx="10"
+                    cy="10"
+                    r="8.5"
+                    stroke="#FD2D15"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M6 10L9 13L14 7"
+                    stroke="#FD2D15"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="text-[12px] sm:text-[13px] lg:text-[14px] font-normal text-[#ededed]/70">
+                  No technical skills needed
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  className="sm:w-[18px] sm:h-[18px]"
+                >
+                  <circle
+                    cx="10"
+                    cy="10"
+                    r="8.5"
+                    stroke="#FD2D15"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M7 7L13 13M13 7L7 13"
+                    stroke="#FD2D15"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span className="text-[12px] sm:text-[13px] lg:text-[14px] font-normal text-[#ededed]/70">
+                  Cancel anytime
+                </span>
+              </div>
             </div>
-
-            {/* Floating Elements */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="absolute -top-4 -right-4 px-3 py-1.5 rounded-lg bg-green-100 border border-green-200 shadow-lg"
-            >
-              <span className="text-xs text-green-700 font-medium">+180% visibility</span>
-            </motion.div>
-
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, delay: 1 }}
-              className="absolute -bottom-4 -left-4 px-3 py-1.5 rounded-lg bg-red-100 border border-red-200 shadow-lg"
-            >
-              <span className="text-xs text-red-700 font-medium">Live tracking</span>
-            </motion.div>
           </motion.div>
         </div>
       </div>
-
-      {/* Bottom Gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
     </section>
   );
 }

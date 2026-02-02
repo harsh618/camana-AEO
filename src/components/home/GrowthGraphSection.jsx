@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import marketGrowthIcon from '../../assets/icons/market-growth.svg';
 
 const graphData = [
   { year: "2023", chatgpt: 100, gemini: 20, perplexity: 10, claude: 5 },
@@ -54,7 +55,7 @@ const stats = [
 ];
 
 const logo = [
-  { name: "marketGrowth", logo: "../public/icons/market-growth.svg" },
+  { name: "marketGrowth", logo: marketGrowthIcon  },
 ];
 
 // ─── PNG LOGO COMPONENTS (for ChatGPT & Gemini) ──────────────────────────────

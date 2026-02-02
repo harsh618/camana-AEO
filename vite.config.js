@@ -27,6 +27,7 @@ export default defineConfig(async () => {
 
   return {
     logLevel: 'error', // Suppress warnings, only show errors
+    publicDir: 'public',
     resolve: {
       alias: {
         '@': resolve(__dirname, 'src')
